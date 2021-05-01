@@ -6,7 +6,7 @@ import { Point } from "./class/Point";
 export const boogaloopers = (p: any) => {
   
   const Collides = require("p5collide");
-
+  const nbMaxLignes = 50;
   
   let pos_x: number = window.innerWidth / 2;
   let pos_y: number = window.innerHeight / 2;
@@ -107,7 +107,7 @@ export const boogaloopers = (p: any) => {
   }
 
   p.gererHistoriqueCoordonnes = (point: Point) => {
-    if (historiquesCoordonneesCurseur.length === 100) {
+    if (historiquesCoordonneesCurseur.length === nbMaxLignes) {
       historiquesCoordonneesCurseur.shift();
     }
     historiquesCoordonneesCurseur.push(point);
@@ -173,15 +173,15 @@ export const boogaloopers = (p: any) => {
           
           const formeCreee: [] = p.verifierBoucleContientPoint(lignesDeLaBoucle, pointTestCollision);
           p.validerBoucle(formeCreee);
-      } else {
-        formeBoucle = [];
       }
     }
   }
 
   p.conserverLignesBoucle = (ligneDeCroisement: Line, listeLignesParcourues: Line[]) => {
-    const indexLigneCroisement = listeLignesParcourues.indexOf(ligneDeCroisement);
-    return listeLignesParcourues.slice(indexLigneCroisement);
+    const indexLigneCroisement = listeLignesParcourues.indexOf(ligneDeCroisement);    
+    let resultat = listeLignesParcourues.slice(indexLigneCroisement+1);
+    resultat.pop();
+    return resultat;
   }
 
   p.verifierBoucleContientPoint = (lignesDeLaBoucle: Line[], point: Point) => {
