@@ -22,7 +22,17 @@ export class ServiceEnnemis {
         }
     }
 
+    updatePositionEnnemis() {
+        this.listePointsEnnemis = this.listePointsEnnemis.map( (pointEnnemi: Point) => {
+            pointEnnemi.setPosX(pointEnnemi.getPosX() * 0.99);
+            pointEnnemi.setPosY(pointEnnemi.getPosY() * 0.99);
+            return pointEnnemi;
+
+        });
+    }
+
     drawEnnemis() {
+        this.updatePositionEnnemis();
 
         this.p5.fill(0, 0, 0);
         this.listePointsEnnemis.forEach((point_ennemis: Point) => {        
