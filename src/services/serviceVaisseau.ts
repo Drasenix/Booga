@@ -1,25 +1,26 @@
 import { Circle } from "../class/Circle";
 import { Line } from "../class/Line";
 import { Point } from "../class/Point";
+import { ServiceEnnemis } from "./serviceEnnemis";
 import { ServiceFormes } from "./serviceFormes";
 
 export class ServiceVaisseau {
     p5: any;    
     serviceForme: ServiceFormes;
     Collides: any = require("p5collide");;
+    serviceEnnemis: ServiceEnnemis;
 
     indexPhaseAnimation: number = 0;
     nbFrameAnimation: number = 10;
     formeBoucle: any[] = [];
     nbMaxLignes = 100;
-    pointTestCollision: Point;
     historiquesCoordonneesCurseur: Point[] = [];
     pointeur_cercle: Circle | undefined;
 
-    constructor(p5: any, pointTestCollision: Point) {
+    constructor(p5: any, serviceEnnemis: ServiceEnnemis) {
         this.p5 = p5;
-        this.serviceForme = new ServiceFormes(p5);
-        this.pointTestCollision = pointTestCollision;
+        this.serviceForme = new ServiceFormes(p5, serviceEnnemis);
+        this.serviceEnnemis = serviceEnnemis;
     }
 
     drawFormeBoucle() {    
@@ -31,6 +32,16 @@ export class ServiceVaisseau {
             this.formeBoucle = this.serviceForme.diminuerFormeDeMoitieVersLeCentre(this.formeBoucle);
             this.indexPhaseAnimation--;
         }
+    }
+
+    drawVaisseau() {
+      this.drawFormeBoucle();    
+      this.drawLines();
+      
+      this.p5.noStroke();
+      if (this.pointeur_cercle) {
+        this.p5.circle(this.pointeur_cercle.getPosX(), this.pointeur_cercle.getPosY(), this.pointeur_cercle.getRayon());
+      }
     }
 
     drawLines() {
@@ -89,7 +100,7 @@ export class ServiceVaisseau {
               listeLignesParcourues.push(derniereLigne);
               const lignesDeLaBoucle: Line[] = this.conserverLignesBoucle(ligneDeCroisement, listeLignesParcourues);
               
-              const formeCreee: [] = this.serviceForme.verifierBoucleContientPoint(lignesDeLaBoucle, this.pointTestCollision);
+              const formeCreee: [] = this.serviceForme.verifierBoucleContientPoint(lignesDeLaBoucle, this.serviceEnnemis.listePointsEnnemis);
               this.validerBoucle(formeCreee);
           }
         }

@@ -1,12 +1,16 @@
 import { Line } from "../class/Line";
 import { Point } from "../class/Point";
+import { ServiceEnnemis } from "./serviceEnnemis";
 
 export class ServiceFormes {
     p5: any;    
+    serviceEnnemis: ServiceEnnemis;
+    
     Collides: any = require("p5collide");
 
-    constructor(p5: any) {
+    constructor(p5: any,  serviceEnnemis: ServiceEnnemis) {
         this.p5 = p5;
+        this.serviceEnnemis = serviceEnnemis;
     }
 
     verifierCroisementLigneAvecListeLignes(ligne: Line | undefined,  lignes: Line[]) {
@@ -88,12 +92,15 @@ export class ServiceFormes {
         return new Point(pointCentreLigne_x, pointCentreLigne_y);
     }
     
-    verifierBoucleContientPoint(lignesDeLaBoucle: Line[], point: Point) {
+    verifierBoucleContientPoint(lignesDeLaBoucle: Line[], points_ennemis: Point[]) {
         const polygone: [] = this.formePolygonaleFromLines(lignesDeLaBoucle);
-        const capture: boolean = this.Collides.collidePointPoly(point.getPosX(), point.getPosY(), polygone); 
-        if (capture) {      
-          console.log('Capture');
-        }
+        
+        points_ennemis.forEach((point_ennemi: Point) => {
+            const capture: boolean = this.Collides.collidePointPoly(point_ennemi.getPosX(), point_ennemi.getPosY(), polygone); 
+            if (capture) {      
+              this.serviceEnnemis.supprimerPointEnnemis(point_ennemi);
+            }
+        });
         return polygone;
     }
 

@@ -1,8 +1,9 @@
 import { Circle } from "./class/Circle";
 import { Line } from "./class/Line";
 import { Point } from "./class/Point";
+import { ServiceEnnemis } from "./services/serviceEnnemis";
 import { ServiceFormes } from "./services/serviceFormes";
-import { ServiceVaisseau } from "./services/serviceLigneVaisseau";
+import { ServiceVaisseau } from "./services/serviceVaisseau";
 
 // Exporting a function called 'mySketch'
 export const boogaloopers = (p: any) => {
@@ -11,8 +12,8 @@ export const boogaloopers = (p: any) => {
   let pos_y: number = window.innerHeight / 2;  
   let timer: any;  
   
-  const pointTestCollision = new Point(pos_x, pos_y);
-  const serviceVaisseau = new ServiceVaisseau(p, pointTestCollision);
+  const serviceEnnemis = new ServiceEnnemis(p);
+  const serviceVaisseau = new ServiceVaisseau(p, serviceEnnemis);
 
   // Calling p5.js functions, using the variable 'p'
   p.setup = () => {
@@ -22,23 +23,17 @@ export const boogaloopers = (p: any) => {
     p.noCursor();
     
     serviceVaisseau.instancierCurseur(pos_x, pos_y);
+    serviceEnnemis.instancierEnnemis();
   }
 
   p.draw = () => {
     // Clear the frame
     p.background(255, 1000)
     
-    serviceVaisseau.drawFormeBoucle();    
+    serviceEnnemis.drawEnnemis();
 
-    serviceVaisseau.drawLines();
-    
-    p.noStroke();
-    if (serviceVaisseau.pointeur_cercle) {
-      p.circle(serviceVaisseau.pointeur_cercle.getPosX(), serviceVaisseau.pointeur_cercle.getPosY(), serviceVaisseau.pointeur_cercle.getRayon());
-    }
-    p.fill(0, 0, 0);
-
-    p.circle(pointTestCollision.getPosX(), pointTestCollision.getPosY(), 20);
+    serviceVaisseau.drawVaisseau();
+      
   }
 
   p.mouseMoved = () => {
