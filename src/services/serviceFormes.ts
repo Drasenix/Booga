@@ -9,7 +9,7 @@ export class ServiceFormes {
         this.p5 = p5;
     }
 
-    verifierCroisementLigneAvecListeLignes(ligne: Line, lignes: Line[]) {
+    verifierCroisementLigneAvecListeLignes(ligne: Line | undefined,  lignes: Line[]) {
         let ligneDeCroisement = null;
         lignes.forEach((l: Line) =>{
           const croisementExistant = this.verifierCroisementEntreDeuxLignes(ligne, l);
@@ -33,17 +33,22 @@ export class ServiceFormes {
         return formeDiminuee;
     }
 
-    verifierCroisementEntreDeuxLignes(ligne_a: Line, ligne_b: Line) {        
-        const croisement = this.Collides.collideLineLine(
-          ligne_a.getPointA().getPosX(),
-          ligne_a.getPointA().getPosY(),
-          ligne_a.getPointB().getPosX(),
-          ligne_a.getPointB().getPosY(),
-          ligne_b.getPointA().getPosX(),
-          ligne_b.getPointA().getPosY(),
-          ligne_b.getPointB().getPosX(),
-          ligne_b.getPointB().getPosY(),
-        );
+    verifierCroisementEntreDeuxLignes(ligne_a: Line | undefined, ligne_b: Line) {
+
+        let croisement = undefined;
+        
+        if (ligne_a && ligne_b) {
+            croisement = this.Collides.collideLineLine(
+              ligne_a.getPointA().getPosX(),
+              ligne_a.getPointA().getPosY(),
+              ligne_a.getPointB().getPosX(),
+              ligne_a.getPointB().getPosY(),
+              ligne_b.getPointA().getPosX(),
+              ligne_b.getPointA().getPosY(),
+              ligne_b.getPointB().getPosX(),
+              ligne_b.getPointB().getPosY(),
+            );
+        }
         return croisement;
     }
 

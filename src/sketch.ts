@@ -2,37 +2,40 @@ import { Circle } from "./class/Circle";
 import { Line } from "./class/Line";
 import { Point } from "./class/Point";
 import { ServiceFormes } from "./services/serviceFormes";
-import { ServiceLigneVaisseau } from "./services/serviceLigneVaisseau";
+import { ServiceVaisseau } from "./services/serviceLigneVaisseau";
 
 // Exporting a function called 'mySketch'
 export const boogaloopers = (p: any) => {
       
   let pos_x: number = window.innerWidth / 2;
-  let pos_y: number = window.innerHeight / 2;
-  let pointeur_cercle = new Circle(pos_x, pos_y, 50);
+  let pos_y: number = window.innerHeight / 2;  
   let timer: any;  
   
   const pointTestCollision = new Point(pos_x, pos_y);
-  const serviceLigneVaisseau = new ServiceLigneVaisseau(p, pointTestCollision);
+  const serviceVaisseau = new ServiceVaisseau(p, pointTestCollision);
 
   // Calling p5.js functions, using the variable 'p'
   p.setup = () => {
     // Creating a canvas using the entire screen of the webpage
     p.createCanvas(window.innerWidth, window.innerHeight);
     p.background(255);
-    p.noCursor();    
+    p.noCursor();
+    
+    serviceVaisseau.instancierCurseur(pos_x, pos_y);
   }
 
   p.draw = () => {
     // Clear the frame
     p.background(255, 1000)
     
-    serviceLigneVaisseau.drawFormeBoucle();    
+    serviceVaisseau.drawFormeBoucle();    
 
-    serviceLigneVaisseau.drawLines();
+    serviceVaisseau.drawLines();
     
     p.noStroke();
-    p.circle(pointeur_cercle.getPosX(), pointeur_cercle.getPosY(), pointeur_cercle.getRayon())
+    if (serviceVaisseau.pointeur_cercle) {
+      p.circle(serviceVaisseau.pointeur_cercle.getPosX(), serviceVaisseau.pointeur_cercle.getPosY(), serviceVaisseau.pointeur_cercle.getRayon());
+    }
     p.fill(0, 0, 0);
 
     p.circle(pointTestCollision.getPosX(), pointTestCollision.getPosY(), 20);
@@ -48,19 +51,21 @@ export const boogaloopers = (p: any) => {
 
   p.gererDeplacement  = () => {
     const point: Point = new Point(p.mouseX, p.mouseY);
-
-    pointeur_cercle.setPosX(point.getPosX());
-    pointeur_cercle.setPosY(point.getPosY());
-
-    serviceLigneVaisseau.gererHistoriqueCoordonnes(point);
     
-    serviceLigneVaisseau.verifierSiBoucleComplete();
-    clearTimeout(timer);
-    timer=setTimeout(p.mouseStopped,200);
+    if (serviceVaisseau.pointeur_cercle) {
+      serviceVaisseau.pointeur_cercle.setPosX(point.getPosX());
+      serviceVaisseau.pointeur_cercle.setPosY(point.getPosY());
+  
+      serviceVaisseau.gererHistoriqueCoordonnes(point);
+      
+      serviceVaisseau.verifierSiBoucleComplete();
+      clearTimeout(timer);
+      timer=setTimeout(p.mouseStopped,200);
+    }
   }
 
   p.mouseStopped = async () => {
-    await serviceLigneVaisseau.effacerHistoriqueAvecLatence(10);
+    await serviceVaisseau.effacerHistoriqueAvecLatence(10);
     
   }
   

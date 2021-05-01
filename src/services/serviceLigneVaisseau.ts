@@ -1,8 +1,9 @@
+import { Circle } from "../class/Circle";
 import { Line } from "../class/Line";
 import { Point } from "../class/Point";
 import { ServiceFormes } from "./serviceFormes";
 
-export class ServiceLigneVaisseau {
+export class ServiceVaisseau {
     p5: any;    
     serviceForme: ServiceFormes;
     Collides: any = require("p5collide");;
@@ -13,6 +14,7 @@ export class ServiceLigneVaisseau {
     nbMaxLignes = 100;
     pointTestCollision: Point;
     historiquesCoordonneesCurseur: Point[] = [];
+    pointeur_cercle: Circle | undefined;
 
     constructor(p5: any, pointTestCollision: Point) {
         this.p5 = p5;
@@ -43,6 +45,10 @@ export class ServiceLigneVaisseau {
         }
     }    
 
+    instancierCurseur(pos_x: number, pos_y: number) {
+        this.pointeur_cercle = new Circle(pos_x, pos_y, 50);
+    }
+
     gererHistoriqueCoordonnes(point: Point) {
         if (this.historiquesCoordonneesCurseur.length === this.nbMaxLignes) {
           this.historiquesCoordonneesCurseur.shift();
@@ -72,13 +78,13 @@ export class ServiceLigneVaisseau {
     
     verifierSiBoucleComplete() {
         if (this.historiquesCoordonneesCurseur.length >= 2) {
-          let listeLignesParcourues = this.calculerLignesParcourues(this.historiquesCoordonneesCurseur);
-          const derniereLigne: any = listeLignesParcourues.pop();
-          const ligneEnTrop: any = listeLignesParcourues.pop();
+          let listeLignesParcourues: Line[] = this.calculerLignesParcourues(this.historiquesCoordonneesCurseur);
+          const derniereLigne: Line | undefined = listeLignesParcourues.pop();
+          const ligneEnTrop: Line | undefined = listeLignesParcourues.pop();
     
           const ligneDeCroisement = this.serviceForme.verifierCroisementLigneAvecListeLignes(derniereLigne, listeLignesParcourues);
           
-          if (ligneDeCroisement) {
+          if (ligneDeCroisement && derniereLigne && ligneEnTrop) {
               listeLignesParcourues.push(ligneEnTrop);
               listeLignesParcourues.push(derniereLigne);
               const lignesDeLaBoucle: Line[] = this.conserverLignesBoucle(ligneDeCroisement, listeLignesParcourues);
