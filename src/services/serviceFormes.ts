@@ -98,7 +98,7 @@ export class ServiceFormes {
         points_ennemis.forEach((point_ennemi: Point) => {
             const capture: boolean = this.Collides.collidePointPoly(point_ennemi.getPosX(), point_ennemi.getPosY(), polygone); 
             if (capture) {      
-              this.serviceEnnemis.supprimerPointEnnemis(point_ennemi);
+              this.serviceEnnemis.supprimerEnnemiDepuisPoint(point_ennemi);
             }
         });
         return polygone;
