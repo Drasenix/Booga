@@ -14,6 +14,7 @@ export const boogaloopers = (p: any) => {
   let timer: any;
   
   let historiquesCoordonneesCurseur: Point[] = [];
+  let formeBoucle: [] = [];
   
   const pointTestCollision = new Point(pos_x, pos_y);
 
@@ -29,6 +30,8 @@ export const boogaloopers = (p: any) => {
     // Clear the frame
     p.background(255, 1000)
     
+    p.drawFormeBoucle();    
+
     p.drawLines();
     
     p.noStroke();
@@ -36,6 +39,14 @@ export const boogaloopers = (p: any) => {
     p.fill(0, 0, 0);
 
     p.circle(pointTestCollision.getPosX(), pointTestCollision.getPosY(), 20);
+  }
+
+  p.drawFormeBoucle = () => {
+    if (formeBoucle.length > 0) {
+      p.beginShape();
+      for (const { x, y } of formeBoucle)  p.vertex(x, y);
+      p.endShape(Collides.CLOSE);
+    }
   }
 
   p.drawLines = () => {
@@ -160,7 +171,10 @@ export const boogaloopers = (p: any) => {
           listeLignesParcourues.push(derniereLigne);
           const lignesDeLaBoucle: Line[] = p.conserverLignesBoucle(ligneDeCroisement, listeLignesParcourues);
           
-          p.verifierBoucleContientPoint(lignesDeLaBoucle, pointTestCollision);
+          const formeCreee: [] = p.verifierBoucleContientPoint(lignesDeLaBoucle, pointTestCollision);
+          p.validerBoucle(formeCreee);
+      } else {
+        formeBoucle = [];
       }
     }
   }
@@ -173,9 +187,10 @@ export const boogaloopers = (p: any) => {
   p.verifierBoucleContientPoint = (lignesDeLaBoucle: Line[], point: Point) => {
     const polygone: [] = p.formePolygonaleFromLines(lignesDeLaBoucle);
     const capture: boolean = Collides.collidePointPoly(point.getPosX(), point.getPosY(), polygone); 
-    if (capture) {
-      console.log("capture ! ");
+    if (capture) {      
+      console.log('Capture');
     }
+    return polygone;
   }
 
   p.formePolygonaleFromLines = (lignesDeLaBoucle: Line[]) => {
@@ -186,5 +201,10 @@ export const boogaloopers = (p: any) => {
     });
 
     return polygone;
+  }
+
+  p.validerBoucle = (forme: []) => {
+    historiquesCoordonneesCurseur = [];
+    formeBoucle = forme;    
   }
 }
