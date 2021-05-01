@@ -12,9 +12,11 @@ export const boogaloopers = (p: any) => {
   let pos_y: number = window.innerHeight / 2;
   let pointeur_cercle = new Circle(pos_x, pos_y, 50);
   let timer: any;
-  
+    
+  let indexPhaseAnimation = 0;
+  let nbFrameAnimation = 50;
   let historiquesCoordonneesCurseur: Point[] = [];
-  let formeBoucle: [] = [];
+  let formeBoucle: any[] = [];
   
   const pointTestCollision = new Point(pos_x, pos_y);
 
@@ -41,12 +43,25 @@ export const boogaloopers = (p: any) => {
     p.circle(pointTestCollision.getPosX(), pointTestCollision.getPosY(), 20);
   }
 
-  p.drawFormeBoucle = () => {
-    if (formeBoucle.length > 0) {
+  p.drawFormeBoucle = () => {    
+    if (formeBoucle.length > 0 && indexPhaseAnimation > 0) {
       p.beginShape();
       for (const { x, y } of formeBoucle)  p.vertex(x, y);
       p.endShape(Collides.CLOSE);
+
+      formeBoucle = p.reduireForme(formeBoucle);
+      indexPhaseAnimation--;
     }
+  }
+
+  p.reduireForme = (forme: any[]) => {
+    let nouvelleForme: any[] = [];
+    for (const { x, y } of forme) {
+      const x_diminue = x * 0.95;
+      const y_diminue = y * 0.95;
+      nouvelleForme.push(p.createVector(x_diminue, y_diminue));
+    }
+    return nouvelleForme;
   }
 
   p.drawLines = () => {
@@ -205,6 +220,7 @@ export const boogaloopers = (p: any) => {
 
   p.validerBoucle = (forme: []) => {
     historiquesCoordonneesCurseur = [];
-    formeBoucle = forme;    
+    formeBoucle = forme;
+    indexPhaseAnimation = nbFrameAnimation;    
   }
 }
