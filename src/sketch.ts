@@ -14,7 +14,7 @@ export const boogaloopers = (p: any) => {
   let timer: any;
     
   let indexPhaseAnimation = 0;
-  let nbFrameAnimation = 50;
+  let nbFrameAnimation = 10;
   let historiquesCoordonneesCurseur: Point[] = [];
   let formeBoucle: any[] = [];
   
@@ -49,19 +49,9 @@ export const boogaloopers = (p: any) => {
       for (const { x, y } of formeBoucle)  p.vertex(x, y);
       p.endShape(Collides.CLOSE);
 
-      formeBoucle = p.reduireForme(formeBoucle);
+      formeBoucle = p.diminuerFormeDeMoitieVersLeCentre(formeBoucle);
       indexPhaseAnimation--;
     }
-  }
-
-  p.reduireForme = (forme: any[]) => {
-    let nouvelleForme: any[] = [];
-    for (const { x, y } of forme) {
-      const x_diminue = x * 0.95;
-      const y_diminue = y * 0.95;
-      nouvelleForme.push(p.createVector(x_diminue, y_diminue));
-    }
-    return nouvelleForme;
   }
 
   p.drawLines = () => {
@@ -223,4 +213,55 @@ export const boogaloopers = (p: any) => {
     formeBoucle = forme;
     indexPhaseAnimation = nbFrameAnimation;    
   }
+
+  p.diminuerFormeDeMoitieVersLeCentre = (forme: any[]) => {  
+    const pointCentral = p.trouverPointCentralFormeFermee(forme);
+    let formeDiminuee: any[] = [];
+    
+    for (const { x, y } of forme) {
+      const pointForme = new Point(x, y);
+      const ligneAvecLeCentre = new Line(pointForme, pointCentral);
+      const pointFormeDiminuee = p.trouverPointCentreLigne(ligneAvecLeCentre);
+      formeDiminuee.push(p.createVector(pointFormeDiminuee.getPosX(), pointFormeDiminuee.getPosY()));
+    }
+    return formeDiminuee;
+  }
+
+  p.trouverPointCentralFormeFermee = (forme: any[]) => {
+    const point_depart = new Point(forme[0].x, forme[0].y);
+    const index_milieu = forme.length / 2;
+    const point_milieu = new Point(forme[index_milieu].x, forme[index_milieu].y);
+    
+    const ligneReference = new Line(point_depart, point_milieu);
+    return p.trouverPointCentreLigne(ligneReference);
+  }
+
+  p.diminuerLigneDeMoitie = (ligne: Line) => {
+    
+    const point_a = ligne.getPointA();
+    const point_b = ligne.getPointB();
+
+    const pointCentre = p.trouverPointCentreLigne(ligne);
+
+    const ligne_point_a_point_centre = new Line(point_a, pointCentre);
+    const ligne_point_centre_point_b = new Line(pointCentre, point_b);
+
+    const pointCentre_a = p.trouverPointCentreLigne(ligne_point_a_point_centre);
+    const pointCentre_b = p.trouverPointCentreLigne(ligne_point_centre_point_b);
+
+    return new Line(pointCentre_a, pointCentre_b);
+
+  }
+
+  p.trouverPointCentreLigne = (ligne: Line) => {
+    const point_a = ligne.getPointA();
+    const point_b = ligne.getPointB();
+
+    const pointCentreLigne_x = (point_a.getPosX() + point_b.getPosX()) / 2;
+    const pointCentreLigne_y = (point_a.getPosY() + point_b.getPosY()) / 2;
+
+    return new Point(pointCentreLigne_x, pointCentreLigne_y);
+  }
+
 }
+
