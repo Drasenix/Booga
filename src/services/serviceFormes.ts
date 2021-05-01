@@ -3,6 +3,7 @@ import { Point } from "../class/Point";
 
 export class ServiceFormes {
     p5: any;    
+    Collides: any = require("p5collide");
 
     constructor(p5: any) {
         this.p5 = p5;
@@ -32,9 +33,8 @@ export class ServiceFormes {
         return formeDiminuee;
     }
 
-    verifierCroisementEntreDeuxLignes(ligne_a: Line, ligne_b: Line) {
-        const Collides = require("p5collide");
-        const croisement = Collides.collideLineLine(
+    verifierCroisementEntreDeuxLignes(ligne_a: Line, ligne_b: Line) {        
+        const croisement = this.Collides.collideLineLine(
           ligne_a.getPointA().getPosX(),
           ligne_a.getPointA().getPosY(),
           ligne_a.getPointB().getPosX(),
@@ -84,9 +84,8 @@ export class ServiceFormes {
     }
     
     verifierBoucleContientPoint(lignesDeLaBoucle: Line[], point: Point) {
-        const Collides = require("p5collide");
         const polygone: [] = this.formePolygonaleFromLines(lignesDeLaBoucle);
-        const capture: boolean = Collides.collidePointPoly(point.getPosX(), point.getPosY(), polygone); 
+        const capture: boolean = this.Collides.collidePointPoly(point.getPosX(), point.getPosY(), polygone); 
         if (capture) {      
           console.log('Capture');
         }
