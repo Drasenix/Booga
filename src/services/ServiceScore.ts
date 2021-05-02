@@ -1,31 +1,28 @@
+import { Score } from "../class/Score";
 
 
-export class ServiceScore {
+export class ServiceScorePartie {
     
     private p5: any;
 
-    private score: number;
-    
+    private score: Score;
+    private positionScoreX: number = window.innerWidth / 2;
+    private positionScoreY: number = window.innerHeight - 10;
+    private sizeScore: number = 32;
+
     constructor(p5: any, score: number) {
         this.p5 = p5;
-        this.score = score;
+        this.score = new Score(score, this.positionScoreX, this.positionScoreY, this.sizeScore);
     }
 
-    drawScore() {
+    drawScorePartie() {
         this.p5.textSize(32);
         this.p5.fill(0, 102, 153);
-        this.p5.text(this.score.toString(), window.innerWidth / 2, window.innerHeight - 10);
+        this.p5.text(this.score.getValeur(), this.positionScoreX, this.positionScoreY);
     }
 
     public ajouterScore(score: number) {
-        this.score += score;
-    }
-
-    public getScore(): number {
-        return this.score;
-    }
-    public setScore(value: number) {
-        this.score = value;
+        this.score .ajouterScore(score);
     }
 
 }
