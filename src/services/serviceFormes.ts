@@ -122,4 +122,16 @@ export class ServiceFormes {
            ennemiCercle.getRayon(),
         ) ;
     }
+
+    verifierCercleEnnemiCollideLigne(ennemiCercle: Circle, ligneVaisseau: Line) {
+        return this.Collides.collideLineCircle(
+            ligneVaisseau.getPointA().getPosX(),            
+            ligneVaisseau.getPointA().getPosY(),
+            ligneVaisseau.getPointB().getPosX(),            
+            ligneVaisseau.getPointB().getPosY(),
+            ennemiCercle.getPosX(),
+            ennemiCercle.getPosY(),
+            ennemiCercle.getRayon()
+        );
+    }
 }

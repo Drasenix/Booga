@@ -29,12 +29,18 @@ export class ServiceEnnemis {
         this.listeEnnemis = this.listeEnnemis.map( (ennemi: Ennemi) => {
             ennemi.updatePosition();
             
-            const collision = this.verifierCollisionAvecVaisseau(ennemi);
-      
-            if (collision) {
+            const collisionVaisseau = this.p5.serviceVaisseau.verifierCollisionAvecEnnemi(ennemi);
+            const collisionLigneVaisseau = this.p5.serviceVaisseau.verifierCollisionEnnemiAvecLigneVaisseau(ennemi);
+
+            if (collisionVaisseau) {
                 this.p5.serviceVaisseau.appliquerEffetsCollision(); 
                 this.appliquerEffetsCollision(ennemi);       
-            }            
+            }
+            
+            if (collisionLigneVaisseau) {
+                this.p5.serviceVaisseau.effacerHistoriqueCoordonneesCurseur();
+            }
+
             return ennemi;
         });
     }
@@ -42,18 +48,7 @@ export class ServiceEnnemis {
     appliquerEffetsCollision(ennemi: Ennemi) {
         ennemi.inverserVelocite();
     }
-
-    verifierCollisionAvecVaisseau(ennemi: Ennemi) {
-        let collision = false;
-        const vaisseau = this.p5.serviceVaisseau.getVaisseau();
-        if (!vaisseau.isInvincible()) {
-          collision = this.p5.serviceForme.verifierCercleVaisseauCollidesCercleEnnemi(vaisseau.getPointeurCercle(), ennemi.getEnnemiCercle());
-            
-        }
-  
-        return collision;
-    }
-
+    
     drawEnnemis() {
         this.updatePositionEnnemis();
 

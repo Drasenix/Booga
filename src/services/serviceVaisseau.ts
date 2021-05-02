@@ -72,7 +72,7 @@ export class ServiceVaisseau {
 
     gererDeplacementVaisseau(point: Point) {
       this.vaisseau.updatePosition(point);
-      this.gererHistoriqueCoordonnes(point);
+      this.updateHistoriqueCoordonnes(point);
       this.verifierSiBoucleComplete();
       clearTimeout(this.p5.timer);
       this.p5.timer=setTimeout(this.p5.mouseStopped,200);
@@ -90,7 +90,7 @@ export class ServiceVaisseau {
       this.timerInvincibilite=setTimeout(() => this.vaisseau.setInvincible(false), ms);
     }
 
-    gererHistoriqueCoordonnes(point: Point) {
+    updateHistoriqueCoordonnes(point: Point) {
         if (this.vaisseau.getHistoriquesCoordonneesCurseur().length === this.nbMaxLignes) {
           this.vaisseau.getHistoriquesCoordonneesCurseur().shift();
         }
@@ -144,6 +144,26 @@ export class ServiceVaisseau {
         return resultat;
     }
       
+    verifierCollisionAvecEnnemi(ennemi: Ennemi) {
+      let collision = false;
+      if (!this.vaisseau.isInvincible()) {
+        collision = this.p5.serviceForme.verifierCercleVaisseauCollidesCercleEnnemi(this.vaisseau.getPointeurCercle(), ennemi.getEnnemiCercle());
+          
+      }
+
+      return collision;
+    }
+
+    verifierCollisionEnnemiAvecLigneVaisseau(ennemi: Ennemi) {
+      const listeLignesParcourues: Line[] = this.calculerLignesParcourues(this.vaisseau.getHistoriquesCoordonneesCurseur());
+      const cercleEnnemi = ennemi.getEnnemiCercle();
+
+      return listeLignesParcourues.some((ligne: Line) => {
+        return this.p5.serviceForme.verifierCercleEnnemiCollideLigne(cercleEnnemi, ligne);
+      });
+    }
+
+
     validerBoucle = (forme: []) => {
         this.effacerHistoriqueCoordonneesCurseur();
         this.vaisseau.setFormeBoucle(forme);
