@@ -9,10 +9,11 @@ export const boogaloopers = (p: any) => {
   let pos_x: number = window.innerWidth / 2;
   let pos_y: number = window.innerHeight / 2;  
   let timer: any;  
-  
-  const serviceEnnemis = new ServiceEnnemis(p);
-  const serviceVaisseau = new ServiceVaisseau(p, serviceEnnemis, pos_x, pos_y);
-  const servicePVs = new ServicePVs(p, 5);
+  let imgPV;
+
+  const serviceEnnemis: ServiceEnnemis = new ServiceEnnemis(p);;
+  const serviceVaisseau: ServiceVaisseau = new ServiceVaisseau(p, serviceEnnemis, pos_x, pos_y);;
+  const servicePVs: ServicePVs = new ServicePVs(p, 5);;
   
   // Calling p5.js functions, using the variable 'p'
   p.setup = () => {
@@ -28,11 +29,10 @@ export const boogaloopers = (p: any) => {
     // Clear the frame
     p.background(255, 1000)
     
+    servicePVs.drawPVs();
     serviceEnnemis.drawEnnemis();
-
     serviceVaisseau.drawVaisseau();
 
-    servicePVs.drawPVs();
       
   }
 
