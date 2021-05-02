@@ -32,10 +32,15 @@ export class ServiceEnnemis {
             const collision = this.verifierCollisionAvecVaisseau(ennemi);
       
             if (collision) {
-                this.p5.serviceVaisseau.appliquerEffetsCollision();        
+                this.p5.serviceVaisseau.appliquerEffetsCollision(); 
+                this.appliquerEffetsCollision(ennemi);       
             }            
             return ennemi;
         });
+    }
+
+    appliquerEffetsCollision(ennemi: Ennemi) {
+        ennemi.inverserVelocite();
     }
 
     verifierCollisionAvecVaisseau(ennemi: Ennemi) {
@@ -47,7 +52,7 @@ export class ServiceEnnemis {
         }
   
         return collision;
-      }
+    }
 
     drawEnnemis() {
         this.updatePositionEnnemis();

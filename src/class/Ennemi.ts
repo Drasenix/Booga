@@ -21,18 +21,31 @@ export class Ennemi {
             this.ennemi_cercle.getPosX() + this.velocite_x > window.innerWidth ||
             this.ennemi_cercle.getPosX() + this.velocite_x < 0
         ) {
-            this.velocite_x = this.velocite_x * -1;
+            this.inverserVelociteX();
         }
 
         if (
             this.ennemi_cercle.getPosY() + this.velocite_y > window.innerHeight ||
             this.ennemi_cercle.getPosY() + this.velocite_y < 0
         ) {
-            this.velocite_y = this.velocite_y * -1;
+            this.inverserVelociteY();
         }
 
         this.ennemi_cercle.setPosX(this.ennemi_cercle.getPosX() + this.velocite_x);
         this.ennemi_cercle.setPosY(this.ennemi_cercle.getPosY() + this.velocite_y);
+    }
+
+    public inverserVelocite() {
+        this.inverserVelociteX();
+        this.inverserVelociteY();
+    }
+
+    public inverserVelociteX() {
+        this.velocite_x = this.velocite_x * -1;
+    }
+
+    public inverserVelociteY() {
+        this.velocite_y = this.velocite_y * -1;
     }
 
     public getRayonCercle() {
