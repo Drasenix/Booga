@@ -1,19 +1,23 @@
 import { Point } from "./class/Point";
+import { ServiceBombes } from "./services/ServiceBombes";
 import { ServiceEnnemis } from "./services/serviceEnnemis";
 import { ServicePVs } from "./services/servicePV";
 import { ServiceVaisseau } from "./services/serviceVaisseau";
 
 // Exporting a function called 'mySketch'
 export const boogaloopers = (p: any) => {
-      
+  
+  const largeur_images_hud = window.innerWidth / 25;
+  const hauteur_images_hud = window.innerHeight / 10;
+
   let pos_x: number = window.innerWidth / 2;
-  let pos_y: number = window.innerHeight / 2;  
+  let pos_y: number = window.innerHeight / 2;    
   let timer: any;  
-  let imgPV;
 
   const serviceEnnemis: ServiceEnnemis = new ServiceEnnemis(p);;
   const serviceVaisseau: ServiceVaisseau = new ServiceVaisseau(p, serviceEnnemis, pos_x, pos_y);;
-  const servicePVs: ServicePVs = new ServicePVs(p, 5);;
+  const servicePVs: ServicePVs = new ServicePVs(p, 5, largeur_images_hud, hauteur_images_hud);
+  const serviceBombes: ServiceBombes = new ServiceBombes(p, 3, largeur_images_hud, hauteur_images_hud);
   
   // Calling p5.js functions, using the variable 'p'
   p.setup = () => {
@@ -30,6 +34,7 @@ export const boogaloopers = (p: any) => {
     p.background(255, 1000)
     
     servicePVs.drawPVs();
+    serviceBombes.drawBombes();
     serviceEnnemis.drawEnnemis();
     serviceVaisseau.drawVaisseau();
 
