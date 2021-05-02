@@ -1,6 +1,7 @@
 import { Point } from "./class/Point";
 import { ServiceBombes } from "./services/ServiceBombes";
 import { ServiceEnnemis } from "./services/serviceEnnemis";
+import { ServiceFormes } from "./services/serviceFormes";
 import { ServicePVs } from "./services/servicePV";
 import { ServiceVaisseau } from "./services/serviceVaisseau";
 
@@ -14,10 +15,11 @@ export const boogaloopers = (p: any) => {
   let pos_y: number = window.innerHeight / 2;    
   let timer: any;  
 
-  const serviceEnnemis: ServiceEnnemis = new ServiceEnnemis(p);;
-  const serviceVaisseau: ServiceVaisseau = new ServiceVaisseau(p, serviceEnnemis, pos_x, pos_y);;
+  const serviceEnnemis: ServiceEnnemis = new ServiceEnnemis(p);
+  const serviceForme: ServiceFormes = new ServiceFormes(p, serviceEnnemis);
   const servicePVs: ServicePVs = new ServicePVs(p, 5, largeur_images_hud, hauteur_images_hud);
   const serviceBombes: ServiceBombes = new ServiceBombes(p, 3, largeur_images_hud, hauteur_images_hud);
+  const serviceVaisseau: ServiceVaisseau = new ServiceVaisseau(p, serviceEnnemis, serviceForme, servicePVs, pos_x, pos_y);
   
   // Calling p5.js functions, using the variable 'p'
   p.setup = () => {

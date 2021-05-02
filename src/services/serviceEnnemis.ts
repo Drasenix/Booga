@@ -6,6 +6,7 @@ export class ServiceEnnemis {
     private p5: any;    
 
     private listeEnnemis: Ennemi[] = [];
+    
 
     private nbEnnemis: number = 10;
 
@@ -37,19 +38,27 @@ export class ServiceEnnemis {
 
         this.p5.fill(255, 255, 255);
         this.listeEnnemis.forEach((ennemi: Ennemi) => {        
-            this.p5.circle(ennemi.getCercleEnnemi().getPosX(), ennemi.getCercleEnnemi().getPosY(), ennemi.getRayonCercle());
+            this.p5.circle(ennemi.getEnnemiCercle().getPosX(), ennemi.getEnnemiCercle().getPosY(), ennemi.getRayonCercle());
         });
     }
 
-    getListePointsEnnemis() {
+    getListeCerclesEnnemis() {
         return this.listeEnnemis.map((ennemi: Ennemi) => {
-            return ennemi.getCercleEnnemi();
+            return ennemi.getEnnemiCercle();
         });
     }
 
     supprimerEnnemiDepuisCercle(cercle: Circle) {
         this.listeEnnemis = this.listeEnnemis.filter( (ennemi: Ennemi) => {
-            return ennemi.getCercleEnnemi().getPosX() !== cercle.getPosX() && ennemi.getCercleEnnemi().getPosY() !== cercle.getPosY();
+            return ennemi.getEnnemiCercle().getPosX() !== cercle.getPosX() && ennemi.getEnnemiCercle().getPosY() !== cercle.getPosY();
         })
+    }
+
+    public getListeEnnemis(): Ennemi[] {
+        return this.listeEnnemis;
+    }
+
+    public setListeEnnemis(value: Ennemi[]) {
+        this.listeEnnemis = value;
     }
 }

@@ -114,4 +114,15 @@ export class ServiceFormes {
 
         return polygone;
     }
+
+    verifierCercleVaisseauCollidesCercleEnnemi(vaisseauCercle: Circle, ennemiCercle: Circle) {
+       return this.Collides.collideCircleCircle(
+           vaisseauCercle.getPosX(),
+           vaisseauCercle.getPosY(),
+           vaisseauCercle.getRayon(),
+           ennemiCercle.getPosX(),
+           ennemiCercle.getPosY(),
+           ennemiCercle.getRayon(),
+        ) ;
+    }
 }

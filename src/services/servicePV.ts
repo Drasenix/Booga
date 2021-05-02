@@ -21,6 +21,10 @@ export class ServicePVs {
         }
     }
 
+    reduirePVs() {
+        this.nbPVs--;
+    }
+
     public getNbPVs() {
         return this.nbPVs;
     }
