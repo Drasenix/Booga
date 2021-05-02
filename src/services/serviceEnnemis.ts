@@ -1,4 +1,5 @@
 import { Ennemi } from "../class/Ennemi";
+import { Circle } from "../class/Circle";
 import { Point } from "../class/Point";
 
 export class ServiceEnnemis {
@@ -36,19 +37,19 @@ export class ServiceEnnemis {
 
         this.p5.fill(0, 0, 0);
         this.listeEnnemis.forEach((ennemi: Ennemi) => {        
-            this.p5.circle(ennemi.getPoint().getPosX(), ennemi.getPoint().getPosY(), 20);
+            this.p5.circle(ennemi.getCercleEnnemi().getPosX(), ennemi.getCercleEnnemi().getPosY(), ennemi.getLargeurCercle());
         });
     }
 
     getListePointsEnnemis() {
         return this.listeEnnemis.map((ennemi: Ennemi) => {
-            return ennemi.getPoint();
+            return ennemi.getCercleEnnemi();
         });
     }
 
-    supprimerEnnemiDepuisPoint(point: Point) {
+    supprimerEnnemiDepuisCercle(cercle: Circle) {
         this.listeEnnemis = this.listeEnnemis.filter( (ennemi: Ennemi) => {
-            return ennemi.getPoint().getPosX() !== point.getPosX() && ennemi.getPoint().getPosY() !== point.getPosY();
+            return ennemi.getCercleEnnemi().getPosX() !== cercle.getPosX() && ennemi.getCercleEnnemi().getPosY() !== cercle.getPosY();
         })
     }
 }

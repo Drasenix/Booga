@@ -1,3 +1,4 @@
+import { Circle } from "../class/Circle";
 import { Line } from "../class/Line";
 import { Point } from "../class/Point";
 import { ServiceEnnemis } from "./serviceEnnemis";
@@ -92,13 +93,13 @@ export class ServiceFormes {
         return new Point(pointCentreLigne_x, pointCentreLigne_y);
     }
     
-    verifierBoucleContientPoint(lignesDeLaBoucle: Line[], points_ennemis: Point[]) {
+    verifierBoucleContientCercle(lignesDeLaBoucle: Line[], cercles_ennemis: Circle[]) {
         const polygone: [] = this.formePolygonaleFromLines(lignesDeLaBoucle);
         
-        points_ennemis.forEach((point_ennemi: Point) => {
-            const capture: boolean = this.Collides.collidePointPoly(point_ennemi.getPosX(), point_ennemi.getPosY(), polygone); 
+        cercles_ennemis.forEach((cercle_ennemi: Circle) => {
+            const capture: boolean = this.Collides.collidePointPoly(cercle_ennemi.getPosX(), cercle_ennemi.getPosY(), polygone); 
             if (capture) {      
-              this.serviceEnnemis.supprimerEnnemiDepuisPoint(point_ennemi);
+              this.serviceEnnemis.supprimerEnnemiDepuisCercle(cercle_ennemi);
             }
         });
         return polygone;

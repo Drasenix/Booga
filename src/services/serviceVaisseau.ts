@@ -109,8 +109,8 @@ export class ServiceVaisseau {
               listeLignesParcourues.push(derniereLigne);
               const lignesDeLaBoucle: Line[] = this.conserverLignesBoucle(ligneDeCroisement, listeLignesParcourues);
               
-              const listePointsEnnemis = this.serviceEnnemis.getListePointsEnnemis();
-              const formeCreee: [] = this.serviceForme.verifierBoucleContientPoint(lignesDeLaBoucle, listePointsEnnemis);
+              const listeCerclesEnnemis: Circle[] = this.serviceEnnemis.getListePointsEnnemis();
+              const formeCreee: [] = this.serviceForme.verifierBoucleContientCercle(lignesDeLaBoucle, listeCerclesEnnemis);
               this.validerBoucle(formeCreee);
           }
         }
