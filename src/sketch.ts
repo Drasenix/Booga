@@ -23,7 +23,7 @@ export const boogaloopers = (p: any) => {
   p.setup = () => {
     // Creating a canvas using the entire screen of the webpage
     p.createCanvas(window.innerWidth, window.innerHeight);
-    p.background(255);
+    p.background(0);
     p.noCursor();
     
     serviceEnnemis.instancierEnnemis();
@@ -31,7 +31,7 @@ export const boogaloopers = (p: any) => {
 
   p.draw = () => {
     // Clear the frame
-    p.background(255, 1000)
+    p.background(0, 1000)
     
     servicePVs.drawPVs();
     serviceBombes.drawBombes();

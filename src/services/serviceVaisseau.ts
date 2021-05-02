@@ -54,7 +54,7 @@ export class ServiceVaisseau {
           
           (listeLignesParcourues).forEach((ligne: Line) => {
             this.p5.strokeWeight(5);
-            this.p5.stroke(0,0,0);        
+            this.p5.stroke(255,255,255);        
             this.p5.line(ligne.getPointA().getPosX(), ligne.getPointA().getPosY(), ligne.getPointB().getPosX(), ligne.getPointB().getPosY());
           });
         }

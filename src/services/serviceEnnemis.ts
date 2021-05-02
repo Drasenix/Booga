@@ -35,7 +35,7 @@ export class ServiceEnnemis {
     drawEnnemis() {
         this.updatePositionEnnemis();
 
-        this.p5.fill(0, 0, 0);
+        this.p5.fill(255, 255, 255);
         this.listeEnnemis.forEach((ennemi: Ennemi) => {        
             this.p5.circle(ennemi.getCercleEnnemi().getPosX(), ennemi.getCercleEnnemi().getPosY(), ennemi.getRayonCercle());
         });
