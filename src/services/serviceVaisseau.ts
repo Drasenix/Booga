@@ -17,6 +17,7 @@ export class ServiceVaisseau {
     private indexPhaseAnimation: number = 0;
     private nbFrameAnimation: number = 10;    
     private nbMaxLignes = 100;    
+    private timerInvincibilite: any;
 
     vaisseau: Vaisseau;    
 
@@ -89,15 +90,27 @@ export class ServiceVaisseau {
     appliquerEffetsCollision() {
       this.servicePVs.reduirePVs();
       this.effacerHistoriqueCoordonneesCurseur();
+      this.rendreVaisseauInvincibleTemporairement(2000);
     }
 
     verifierCollisionAvecEnnemi() {
+      let collision = false;
       const ennemis = this.serviceEnnemis.getListeEnnemis();
       
-      return ennemis.some((ennemi: Ennemi) => {
-        return this.serviceForme.verifierCercleVaisseauCollidesCercleEnnemi(this.vaisseau.getPointeurCercle(), ennemi.getEnnemiCercle());
-        
-      });
+      if (!this.vaisseau.isInvincible()) {
+        collision = ennemis.some((ennemi: Ennemi) => {
+          return this.serviceForme.verifierCercleVaisseauCollidesCercleEnnemi(this.vaisseau.getPointeurCercle(), ennemi.getEnnemiCercle());
+          
+        });
+      }
+
+      return collision;
+    }
+
+    rendreVaisseauInvincibleTemporairement(ms: number) {
+      this.vaisseau.setInvincible(true);
+      clearTimeout(this.timerInvincibilite);
+      this.timerInvincibilite=setTimeout(() => this.vaisseau.setInvincible(false), ms);
     }
 
     gererHistoriqueCoordonnes(point: Point) {

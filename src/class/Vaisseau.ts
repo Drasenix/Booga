@@ -8,6 +8,7 @@ export class Vaisseau {
     
     private pointeurCercle: Circle;    
     private rayonCercle = 50;
+    private invincible: boolean = false;
     
 
     constructor(pos_x: number, pos_y: number) {
@@ -44,6 +45,14 @@ export class Vaisseau {
     }
     public setRayonCercle(value: number) {
         this.rayonCercle = value;
+    }
+
+    public isInvincible(): boolean {
+        return this.invincible;
+    }
+
+    public setInvincible(value: boolean) {
+        this.invincible = value;
     }
 
 }
