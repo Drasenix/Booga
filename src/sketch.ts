@@ -42,6 +42,7 @@ export const boogaloopers = (p: any) => {
     p.background(0, 1000)
     
     p.serviceScore.drawScorePartie();
+    p.serviceScore.drawScores();
     p.servicePVs.drawPVs();
     p.serviceBombes.drawBombes();
     p.serviceEnnemis.drawEnnemis();

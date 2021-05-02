@@ -1,5 +1,6 @@
 import { Circle } from "./Circle";
 import { Point } from "./Point";
+import { Score } from "./Score";
 
 export class Ennemi {
 
@@ -10,16 +11,22 @@ export class Ennemi {
     private velocite_x: number;
     private velocite_y: number;
     
-    private valueScore: number;
+    private score: Score;
+   
     
     constructor(point: Point) {
         this.ennemi_cercle = new Circle(point.getPosX(), point.getPosY(), this.rayonCercle);
         this.velocite_x = Math.random() * 5 * (Math.round(Math.random()) ? 1 : -1);
         this.velocite_y = Math.random() * 5 * (Math.round(Math.random()) ? 1 : -1);
-        this.valueScore = (Math.round(Math.random() * 10 )) * 10;
+    
+        const valueScore = (Math.round(Math.random() * 10 )) * 10;
+        const tailleScore = 32;
+        this.score = new Score(valueScore, point.getPosX(), point.getPosY(), tailleScore);
     }
 
     updatePosition() {
+        this.score.setPos_x(this.ennemi_cercle.getPosX());
+        this.score.setPos_y(this.ennemi_cercle.getPosY());
         if (
             this.ennemi_cercle.getPosX() + this.velocite_x > window.innerWidth ||
             this.ennemi_cercle.getPosX() + this.velocite_x < 0
@@ -65,10 +72,10 @@ export class Ennemi {
         this.ennemi_cercle = value;
     }
 
-    public getValueScore(): number {
-        return this.valueScore;
+    public getScore(): Score {
+        return this.score;
     }
-    public setValueScore(value: number) {
-        this.valueScore = value;
+    public setScore(value: Score) {
+        this.score = value;
     }
 }

@@ -61,7 +61,8 @@ export class ServiceEnnemis {
 
     validerCaptureEnnemi(ennemi: Ennemi) {
         this.supprimerEnnemi(ennemi);
-        this.p5.serviceScore.ajouterScore(ennemi.getValueScore());
+        this.p5.serviceScore.augmenterScoreGlobal(ennemi.getScore());
+        this.p5.serviceScore.ajouterScoreToDraw(ennemi.getScore());
     }
 
     supprimerEnnemi(ennemi: Ennemi) {
