@@ -1,17 +1,14 @@
 import { Circle } from "../class/Circle";
 import { Line } from "../class/Line";
 import { Point } from "../class/Point";
-import { ServiceEnnemis } from "./serviceEnnemis";
 
 export class ServiceFormes {
     private p5: any;    
-    private serviceEnnemis: ServiceEnnemis;
     
     private Collides: any = require("p5collide");
 
-    constructor(p5: any,  serviceEnnemis: ServiceEnnemis) {
+    constructor(p5: any) {
         this.p5 = p5;
-        this.serviceEnnemis = serviceEnnemis;
     }
 
     verifierCroisementLigneAvecListeLignes(ligne: Line | undefined,  lignes: Line[]) {
@@ -99,7 +96,7 @@ export class ServiceFormes {
         cercles_ennemis.forEach((cercle_ennemi: Circle) => {
             const capture: boolean = this.Collides.collidePointPoly(cercle_ennemi.getPosX(), cercle_ennemi.getPosY(), polygone); 
             if (capture) {      
-              this.serviceEnnemis.supprimerEnnemiDepuisCercle(cercle_ennemi);
+              this.p5.serviceEnnemis.supprimerEnnemiDepuisCercle(cercle_ennemi);
             }
         });
         return polygone;

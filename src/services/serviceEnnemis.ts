@@ -7,7 +7,6 @@ export class ServiceEnnemis {
 
     private listeEnnemis: Ennemi[] = [];
     
-
     private nbEnnemis: number = 10;
 
     constructor(p5: any) {
@@ -28,10 +27,27 @@ export class ServiceEnnemis {
 
     updatePositionEnnemis() {
         this.listeEnnemis = this.listeEnnemis.map( (ennemi: Ennemi) => {
-            ennemi.updatePosition();            
+            ennemi.updatePosition();
+            
+            const collision = this.verifierCollisionAvecVaisseau(ennemi);
+      
+            if (collision) {
+                this.p5.serviceVaisseau.appliquerEffetsCollision();        
+            }            
             return ennemi;
         });
     }
+
+    verifierCollisionAvecVaisseau(ennemi: Ennemi) {
+        let collision = false;
+        const vaisseau = this.p5.serviceVaisseau.getVaisseau();
+        if (!vaisseau.isInvincible()) {
+          collision = this.p5.serviceForme.verifierCercleVaisseauCollidesCercleEnnemi(vaisseau.getPointeurCercle(), ennemi.getEnnemiCercle());
+            
+        }
+  
+        return collision;
+      }
 
     drawEnnemis() {
         this.updatePositionEnnemis();

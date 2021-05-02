@@ -14,31 +14,36 @@ export const boogaloopers = (p: any) => {
   let pos_x: number = window.innerWidth / 2;
   let pos_y: number = window.innerHeight / 2;    
   let timer: any;  
-
-  const serviceEnnemis: ServiceEnnemis = new ServiceEnnemis(p);
-  const serviceForme: ServiceFormes = new ServiceFormes(p, serviceEnnemis);
-  const servicePVs: ServicePVs = new ServicePVs(p, 5, largeur_images_hud, hauteur_images_hud);
-  const serviceBombes: ServiceBombes = new ServiceBombes(p, 3, largeur_images_hud, hauteur_images_hud);
-  const serviceVaisseau: ServiceVaisseau = new ServiceVaisseau(p, serviceEnnemis, serviceForme, servicePVs, pos_x, pos_y);
   
+  let instanciationTerminee = false;
+
   // Calling p5.js functions, using the variable 'p'
-  p.setup = () => {
+  p.setup = async () => {
+
+    p.serviceVaisseau = new ServiceVaisseau(p, pos_x, pos_y);
+    p.serviceEnnemis = new ServiceEnnemis(p);
+    p.serviceForme = new ServiceFormes(p);
+    p.servicePVs = new ServicePVs(p, 5, largeur_images_hud, hauteur_images_hud);
+    p.serviceBombes = new ServiceBombes(p, 3, largeur_images_hud, hauteur_images_hud);
+
     // Creating a canvas using the entire screen of the webpage
     p.createCanvas(window.innerWidth, window.innerHeight);
     p.background(0);
     p.noCursor();
     
-    serviceEnnemis.instancierEnnemis();
+    p.serviceEnnemis.instancierEnnemis();
+
+    instanciationTerminee = true;
   }
 
   p.draw = () => {
     // Clear the frame
     p.background(0, 1000)
     
-    servicePVs.drawPVs();
-    serviceBombes.drawBombes();
-    serviceEnnemis.drawEnnemis();
-    serviceVaisseau.drawVaisseau();
+    p.servicePVs.drawPVs();
+    p.serviceBombes.drawBombes();
+    p.serviceEnnemis.drawEnnemis();
+    p.serviceVaisseau.drawVaisseau();
       
   }
 
@@ -51,13 +56,15 @@ export const boogaloopers = (p: any) => {
   }
 
   p.gererDeplacement  = () => {
-    const point: Point = new Point(p.mouseX, p.mouseY);
-    
-    serviceVaisseau.gererDeplacementVaisseau(point);    
+    if (instanciationTerminee) {
+      const point: Point = new Point(p.mouseX, p.mouseY);
+      
+      p.serviceVaisseau.gererDeplacementVaisseau(point);    
+    }
   }
 
   p.mouseStopped = async () => {
-    await serviceVaisseau.effacerHistoriqueAvecLatence(10);
+    await p.serviceVaisseau.effacerHistoriqueAvecLatence(10);
     
   }
   
