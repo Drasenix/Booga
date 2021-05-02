@@ -37,7 +37,7 @@ export class ServiceVaisseau {
             this.p5.endShape(this.Collides.CLOSE);
 
             this.vaisseau.setFormeBoucle(
-              this.p5.serviceForme.diminuerFormeDeMoitieVersLeCentre(this.vaisseau.getFormeBoucle())
+              this.p5.serviceControleurPartie.getServiceForme().diminuerFormeDeMoitieVersLeCentre(this.vaisseau.getFormeBoucle())
             );
             this.indexPhaseAnimation--;
         }
@@ -81,8 +81,8 @@ export class ServiceVaisseau {
     appliquerEffetsCollision() {
       this.effacerHistoriqueCoordonneesCurseur();
       this.rendreVaisseauInvincibleTemporairement(2000);
-      this.p5.servicePVs.reduirePVs();
-      this.p5.serviceScore.perdreScoreCollision(this.vaisseau.getPointeurCercle().getPosX(), this.vaisseau.getPointeurCercle().getPosY());
+      this.p5.serviceControleurPartie.getServicePVs().reduirePVs();
+      this.p5.serviceControleurPartie.getServiceScore().perdreScoreCollision(this.vaisseau.getPointeurCercle().getPosX(), this.vaisseau.getPointeurCercle().getPosY());
     }   
 
     rendreVaisseauInvincibleTemporairement(ms: number) {
@@ -124,28 +124,28 @@ export class ServiceVaisseau {
           const derniereLigne: Line | undefined = listeLignesParcourues.pop();
           const ligneEnTrop: Line | undefined = listeLignesParcourues.pop();
     
-          const ligneDeCroisement = this.p5.serviceForme.verifierCroisementLigneAvecListeLignes(derniereLigne, listeLignesParcourues);
+          const ligneDeCroisement = this.p5.serviceControleurPartie.getServiceForme().verifierCroisementLigneAvecListeLignes(derniereLigne, listeLignesParcourues);
           
           if (ligneDeCroisement && derniereLigne && ligneEnTrop) {
               listeLignesParcourues.push(ligneEnTrop);
               listeLignesParcourues.push(derniereLigne);
               const lignesDeLaBoucle: Line[] = this.conserverLignesBoucle(ligneDeCroisement, listeLignesParcourues);
               
-              const formeCreee: [] = this.verifierCaptureEnnemis(lignesDeLaBoucle, this.p5.serviceEnnemis.getListeEnnemis());
+              const formeCreee: [] = this.verifierCaptureEnnemis(lignesDeLaBoucle, this.p5.serviceControleurPartie.getServiceEnnemis().getListeEnnemis());
               this.validerBoucle(formeCreee);
           }
         }
     }
     
     verifierCaptureEnnemis(lignesDeLaBoucle: Line[], ennemis: Ennemi[]) {
-      const polygone: [] = this.p5.serviceForme.formePolygonaleFromLines(lignesDeLaBoucle);
+      const polygone: [] = this.p5.serviceControleurPartie.getServiceForme().formePolygonaleFromLines(lignesDeLaBoucle);
       
       ennemis.forEach((ennemi: Ennemi) => {
           const cercle_ennemi = ennemi.getEnnemiCercle();
           const capture: boolean = this.Collides.collidePointPoly(cercle_ennemi.getPosX(), cercle_ennemi.getPosY(), polygone); 
           
           if (capture) {      
-            this.p5.serviceEnnemis.validerCaptureEnnemi(ennemi);
+            this.p5.serviceControleurPartie.getServiceEnnemis().validerCaptureEnnemi(ennemi);
           }
       });
       return polygone;
@@ -166,7 +166,7 @@ export class ServiceVaisseau {
     verifierCollisionAvecEnnemi(ennemi: Ennemi) {
       let collision = false;
       if (!this.vaisseau.isInvincible()) {
-        collision = this.p5.serviceForme.verifierCercleVaisseauCollidesCercleEnnemi(this.vaisseau.getPointeurCercle(), ennemi.getEnnemiCercle());
+        collision = this.p5.serviceControleurPartie.getServiceForme().verifierCercleVaisseauCollidesCercleEnnemi(this.vaisseau.getPointeurCercle(), ennemi.getEnnemiCercle());
           
       }
 
@@ -182,7 +182,7 @@ export class ServiceVaisseau {
       const cercleEnnemi = ennemi.getEnnemiCercle();
 
       const ligneEnCollision = listeLignesParcourues.find((ligne: Line) => {
-        return this.p5.serviceForme.verifierCercleEnnemiCollideLigne(cercleEnnemi, ligne);
+        return this.p5.serviceControleurPartie.getServiceForme().verifierCercleEnnemiCollideLigne(cercleEnnemi, ligne);
       });
 
       if (ligneEnCollision) {

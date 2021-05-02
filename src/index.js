@@ -2,7 +2,7 @@
 import p5 from 'p5'
 
 // Import a variable from a javascript file from the project folder
-import { boogaloopers } from './sketch.ts'
+import { boogaloopers } from './boogaloopers.ts'
 //import { test } from './tests.ts'
 // Import css styles in javascript
 import './index.css'

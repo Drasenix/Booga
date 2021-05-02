@@ -29,8 +29,8 @@ export class ServiceEnnemis {
         this.listeEnnemis = this.listeEnnemis.map( (ennemi: Ennemi) => {
             ennemi.updatePosition();
             
-            const collisionVaisseau = this.p5.serviceVaisseau.verifierCollisionAvecEnnemi(ennemi);
-            this.p5.serviceVaisseau.verifierCollisionEnnemiAvecLigneVaisseau(ennemi);
+            const collisionVaisseau = this.p5.serviceControleurPartie.getServiceVaisseau().verifierCollisionAvecEnnemi(ennemi);
+            this.p5.serviceControleurPartie.getServiceVaisseau().verifierCollisionEnnemiAvecLigneVaisseau(ennemi);
 
             if (collisionVaisseau) {
                 this.appliquerEffetsCollision(ennemi);       
@@ -61,8 +61,8 @@ export class ServiceEnnemis {
 
     validerCaptureEnnemi(ennemi: Ennemi) {
         this.supprimerEnnemi(ennemi);
-        this.p5.serviceScore.augmenterScoreGlobal(ennemi.getScore());
-        this.p5.serviceScore.ajouterScoreToDraw(ennemi.getScore());
+        this.p5.serviceControleurPartie.getServiceScore().augmenterScoreGlobal(ennemi.getScore());
+        this.p5.serviceControleurPartie.getServiceScore().ajouterScoreToDraw(ennemi.getScore());
     }
 
     supprimerEnnemi(ennemi: Ennemi) {

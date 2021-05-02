@@ -7,7 +7,7 @@ export class ServiceScore {
     
     private p5: any;
 
-    private scoreGlobal: Score;
+    private scoreGlobal: Score;    
     private positionScoreX: number = window.innerWidth / 2;
     private positionScoreY: number = window.innerHeight - 10;
     private sizeScoreGlobal: number = 32;
@@ -66,5 +66,12 @@ export class ServiceScore {
 
     public ajouterScoreToDraw(score: Score) {
         this.listeScoresAAfficher.push(score);
+    }
+
+    public getScoreGlobal(): Score {
+        return this.scoreGlobal;
+    }
+    public setScoreGlobal(value: Score) {
+        this.scoreGlobal = value;
     }
 }

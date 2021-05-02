@@ -23,6 +23,9 @@ export class ServicePVs {
 
     reduirePVs() {
         this.nbPVs--;
+        if (this.nbPVs === 0 ) {
+            this.p5.serviceControleurPartie.perdrePartie();
+        }
     }
 
     public getNbPVs() {
