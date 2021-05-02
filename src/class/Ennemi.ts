@@ -4,13 +4,13 @@ import { Point } from "./Point";
 export class Ennemi {
 
     private ennemi_cercle: Circle;
-    private largeur_cercle = Math.random() * 30 + 10;
+    private rayonCercle = Math.random() * 30 + 10;
     
     private velocite_x: number;
     private velocite_y: number;
     
     constructor(point: Point) {
-        this.ennemi_cercle = new Circle(point.getPosX(), point.getPosY(), this.largeur_cercle);
+        this.ennemi_cercle = new Circle(point.getPosX(), point.getPosY(), this.rayonCercle);
         this.velocite_x = Math.random() * Math.round(Math.random()) ? 1 : -1;
         this.velocite_y = Math.random() * Math.round(Math.random()) ? 1 : -1;
     }
@@ -41,10 +41,10 @@ export class Ennemi {
         this.ennemi_cercle = value;
     }
 
-    public getLargeurCercle() {
-        return this.largeur_cercle;
+    public getRayonCercle() {
+        return this.rayonCercle;
     }
-    public setLargeurCercle(value: number) {
-        this.largeur_cercle = value;
+    public setRayonCercle(value: number) {
+        this.rayonCercle = value;
     }
 }

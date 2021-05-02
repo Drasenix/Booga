@@ -7,10 +7,11 @@ export class Vaisseau {
     private formeBoucle: any[] = [];
     
     private pointeurCercle: Circle;    
-    private largeur_cercle = 50;
+    private rayonCercle = 50;
+    
 
     constructor(pos_x: number, pos_y: number) {
-        this.pointeurCercle = new Circle(pos_x, pos_y, this.largeur_cercle);        
+        this.pointeurCercle = new Circle(pos_x, pos_y, this.rayonCercle);        
     }
 
     updatePosition(point: Point) {
@@ -36,6 +37,13 @@ export class Vaisseau {
     }
     public setPointeurCercle(value: Circle ) {
         this.pointeurCercle = value;
+    }
+
+    public getRayonCercle() {
+        return this.rayonCercle;
+    }
+    public setRayonCercle(value: number) {
+        this.rayonCercle = value;
     }
 
 }
