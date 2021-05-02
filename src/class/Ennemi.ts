@@ -10,10 +10,13 @@ export class Ennemi {
     private velocite_x: number;
     private velocite_y: number;
     
+    private valueScore: number;
+    
     constructor(point: Point) {
         this.ennemi_cercle = new Circle(point.getPosX(), point.getPosY(), this.rayonCercle);
         this.velocite_x = Math.random() * 5 * (Math.round(Math.random()) ? 1 : -1);
         this.velocite_y = Math.random() * 5 * (Math.round(Math.random()) ? 1 : -1);
+        this.valueScore = (Math.round(Math.random() * 10 )) * 10;
     }
 
     updatePosition() {
@@ -60,5 +63,12 @@ export class Ennemi {
     }
     public setEnnemiCercle(value: Circle) {
         this.ennemi_cercle = value;
+    }
+
+    public getValueScore(): number {
+        return this.valueScore;
+    }
+    public setValueScore(value: number) {
+        this.valueScore = value;
     }
 }
