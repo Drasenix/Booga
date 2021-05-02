@@ -3,7 +3,7 @@ import { ServiceBombes } from "./services/ServiceBombes";
 import { ServiceEnnemis } from "./services/serviceEnnemis";
 import { ServiceFormes } from "./services/serviceFormes";
 import { ServicePVs } from "./services/servicePV";
-import { ServiceScorePartie } from "./services/ServiceScore";
+import { ServiceScore } from "./services/ServiceScore";
 import { ServiceVaisseau } from "./services/serviceVaisseau";
 
 // Exporting a function called 'mySketch'
@@ -24,7 +24,7 @@ export const boogaloopers = (p: any) => {
     p.serviceForme = new ServiceFormes(p);
     p.servicePVs = new ServicePVs(p, 5, largeur_images_hud, hauteur_images_hud);
     p.serviceBombes = new ServiceBombes(p, 3, largeur_images_hud, hauteur_images_hud);
-    p.serviceScore = new ServiceScorePartie(p, score);
+    p.serviceScore = new ServiceScore(p, score);
 
     p.serviceEnnemis.instancierEnnemis();
 
