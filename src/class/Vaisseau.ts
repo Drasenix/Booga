@@ -8,8 +8,7 @@ export class Vaisseau {
     
     private pointeurCercle: Circle;    
     private rayonCercle = 50;
-    private invincible: boolean = false;
-    
+    private invincible: boolean = false;    
 
     constructor(pos_x: number, pos_y: number) {
         this.pointeurCercle = new Circle(pos_x, pos_y, this.rayonCercle);        

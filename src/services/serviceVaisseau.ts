@@ -18,6 +18,9 @@ export class ServiceVaisseau {
     private nbFrameAnimation: number = 10;    
     private nbMaxLignes = 100;    
     private timerInvincibilite: any;
+    
+    private couleurVaisseau;
+    private couleurVaisseauInvincible;
 
     vaisseau: Vaisseau;    
 
@@ -34,6 +37,8 @@ export class ServiceVaisseau {
         this.serviceEnnemis = serviceEnnemis;
         this.vaisseau = new Vaisseau(pos_x, pos_y);
         this.servicePVs = servicePVs;
+        this.couleurVaisseau = this.p5.color(255, 255, 255);
+        this.couleurVaisseauInvincible = this.p5.color(23,150,24);
     }
 
     drawFormeBoucle() {    
@@ -55,6 +60,10 @@ export class ServiceVaisseau {
       
       this.p5.noStroke();
 
+      const couleurVaisseauActuelle = this.vaisseau.isInvincible() ? this.couleurVaisseauInvincible : this.couleurVaisseau;
+      
+      this.p5.fill(couleurVaisseauActuelle);
+      
       if (this.vaisseau.getPointeurCercle()) {
         this.p5.circle(this.vaisseau.getPointeurCercle().getPosX(), this.vaisseau.getPointeurCercle().getPosY(), this.vaisseau.getPointeurCercle().getRayon());
       }
