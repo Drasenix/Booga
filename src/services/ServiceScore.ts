@@ -10,13 +10,13 @@ export class ServiceScore {
     private scoreGlobal: Score;
     private positionScoreX: number = window.innerWidth / 2;
     private positionScoreY: number = window.innerHeight - 10;
-    private sizeScore: number = 32;
-    
+    private sizeScoreGlobal: number = 32;
+    private valeurScoreCollision: number = -100;
     private listeScoresAAfficher: Score[];
 
     constructor(p5: any, score: number) {
         this.p5 = p5;
-        this.scoreGlobal = new Score(score, this.positionScoreX, this.positionScoreY, this.sizeScore);
+        this.scoreGlobal = new Score(score, this.positionScoreX, this.positionScoreY, this.sizeScoreGlobal);
         this.listeScoresAAfficher = [];
     }
 
@@ -44,6 +44,14 @@ export class ServiceScore {
         if (score.getNbFramesAnimation() === 0 ) {
             this.retirerScoreDeListeDesScoresAAfficher(score);
         }
+    }
+
+    perdreScoreCollision(posX: number, posY: number) {
+        const sizeScoreCollision = 40;
+        const scoreCollision = new Score(this.valeurScoreCollision, posX, posY, sizeScoreCollision);
+        this.listeScoresAAfficher.push(scoreCollision);
+        this.augmenterScoreGlobal(scoreCollision);
+
     }
 
     public retirerScoreDeListeDesScoresAAfficher(score: Score) {

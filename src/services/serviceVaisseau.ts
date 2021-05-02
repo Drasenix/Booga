@@ -79,9 +79,10 @@ export class ServiceVaisseau {
     }
     
     appliquerEffetsCollision() {
-      this.p5.servicePVs.reduirePVs();
       this.effacerHistoriqueCoordonneesCurseur();
       this.rendreVaisseauInvincibleTemporairement(2000);
+      this.p5.servicePVs.reduirePVs();
+      this.p5.serviceScore.perdreScoreCollision(this.vaisseau.getPointeurCercle().getPosX(), this.vaisseau.getPointeurCercle().getPosY());
     }   
 
     rendreVaisseauInvincibleTemporairement(ms: number) {
