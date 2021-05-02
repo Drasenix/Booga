@@ -30,17 +30,12 @@ export class ServiceEnnemis {
             ennemi.updatePosition();
             
             const collisionVaisseau = this.p5.serviceVaisseau.verifierCollisionAvecEnnemi(ennemi);
-            const collisionLigneVaisseau = this.p5.serviceVaisseau.verifierCollisionEnnemiAvecLigneVaisseau(ennemi);
+            this.p5.serviceVaisseau.verifierCollisionEnnemiAvecLigneVaisseau(ennemi);
 
             if (collisionVaisseau) {
-                this.p5.serviceVaisseau.appliquerEffetsCollision(); 
                 this.appliquerEffetsCollision(ennemi);       
             }
-            
-            if (collisionLigneVaisseau) {
-                this.p5.serviceVaisseau.effacerHistoriqueCoordonneesCurseur();
-            }
-
+                        
             return ennemi;
         });
     }

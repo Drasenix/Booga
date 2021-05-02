@@ -143,13 +143,22 @@ export class ServiceVaisseau {
         resultat.pop();
         return resultat;
     }
-      
+    
+    supprimerLignesParcouruesJusquaLigne(lignesParcourues: Line[], line: Line) {
+      const indexLigne = lignesParcourues.indexOf(line);
+      return lignesParcourues.slice(indexLigne);
+    }
+
     verifierCollisionAvecEnnemi(ennemi: Ennemi) {
       let collision = false;
       if (!this.vaisseau.isInvincible()) {
         collision = this.p5.serviceForme.verifierCercleVaisseauCollidesCercleEnnemi(this.vaisseau.getPointeurCercle(), ennemi.getEnnemiCercle());
           
       }
+
+      if (collision) {
+        this.appliquerEffetsCollision();    
+    }
 
       return collision;
     }
@@ -158,9 +167,13 @@ export class ServiceVaisseau {
       const listeLignesParcourues: Line[] = this.calculerLignesParcourues(this.vaisseau.getHistoriquesCoordonneesCurseur());
       const cercleEnnemi = ennemi.getEnnemiCercle();
 
-      return listeLignesParcourues.some((ligne: Line) => {
+      const ligneEnCollision = listeLignesParcourues.find((ligne: Line) => {
         return this.p5.serviceForme.verifierCercleEnnemiCollideLigne(cercleEnnemi, ligne);
       });
+
+      if (ligneEnCollision) {
+        this.vaisseau.supprimerHistoriqueCoordonneesJusquaLigne(ligneEnCollision);
+      }
     }
 
 

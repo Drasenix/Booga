@@ -1,4 +1,5 @@
 import { Circle } from "./Circle";
+import { Line } from "./Line";
 import { Point } from "./Point";
 
 export class Vaisseau {
@@ -18,6 +19,12 @@ export class Vaisseau {
         this.pointeurCercle.setPosX(point.getPosX());
         this.pointeurCercle.setPosY(point.getPosY());
     }
+
+    supprimerHistoriqueCoordonneesJusquaLigne(ligne: Line) {
+        const indexPointDeReference = this.historiquesCoordonneesCurseur.indexOf(ligne.getPointB());
+        this.historiquesCoordonneesCurseur = this.historiquesCoordonneesCurseur.slice(indexPointDeReference);
+    }
+
     public getHistoriquesCoordonneesCurseur(): Point[] {
         return this.historiquesCoordonneesCurseur;
     }
