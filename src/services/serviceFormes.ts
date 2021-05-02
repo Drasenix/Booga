@@ -88,19 +88,7 @@ export class ServiceFormes {
         const pointCentreLigne_y = (point_a.getPosY() + point_b.getPosY()) / 2;
     
         return new Point(pointCentreLigne_x, pointCentreLigne_y);
-    }
-    
-    verifierBoucleContientCercle(lignesDeLaBoucle: Line[], cercles_ennemis: Circle[]) {
-        const polygone: [] = this.formePolygonaleFromLines(lignesDeLaBoucle);
-        
-        cercles_ennemis.forEach((cercle_ennemi: Circle) => {
-            const capture: boolean = this.Collides.collidePointPoly(cercle_ennemi.getPosX(), cercle_ennemi.getPosY(), polygone); 
-            if (capture) {      
-              this.p5.serviceEnnemis.supprimerEnnemiDepuisCercle(cercle_ennemi);
-            }
-        });
-        return polygone;
-    }
+    }    
 
     formePolygonaleFromLines(lignesDeLaBoucle: Line[]) {
         let polygone: any = [];

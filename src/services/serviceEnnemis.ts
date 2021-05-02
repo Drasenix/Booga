@@ -59,9 +59,13 @@ export class ServiceEnnemis {
         });
     }
 
-    supprimerEnnemiDepuisCercle(cercle: Circle) {
-        this.listeEnnemis = this.listeEnnemis.filter( (ennemi: Ennemi) => {
-            return ennemi.getEnnemiCercle().getPosX() !== cercle.getPosX() && ennemi.getEnnemiCercle().getPosY() !== cercle.getPosY();
+    validerCaptureEnnemi(ennemi: Ennemi) {
+        this.supprimerEnnemi(ennemi);
+    }
+
+    supprimerEnnemi(ennemi: Ennemi) {
+        this.listeEnnemis = this.listeEnnemis.filter( (ennemiActuel: Ennemi) => {
+            return ennemi !== ennemiActuel;
         })
     }
 

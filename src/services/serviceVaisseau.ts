@@ -130,13 +130,26 @@ export class ServiceVaisseau {
               listeLignesParcourues.push(derniereLigne);
               const lignesDeLaBoucle: Line[] = this.conserverLignesBoucle(ligneDeCroisement, listeLignesParcourues);
               
-              const listeCerclesEnnemis: Circle[] = this.p5.serviceEnnemis.getListeCerclesEnnemis();
-              const formeCreee: [] = this.p5.serviceForme.verifierBoucleContientCercle(lignesDeLaBoucle, listeCerclesEnnemis);
+              const formeCreee: [] = this.verifierCaptureEnnemis(lignesDeLaBoucle, this.p5.serviceEnnemis.getListeEnnemis());
               this.validerBoucle(formeCreee);
           }
         }
-      }
+    }
     
+    verifierCaptureEnnemis(lignesDeLaBoucle: Line[], ennemis: Ennemi[]) {
+      const polygone: [] = this.p5.serviceForme.formePolygonaleFromLines(lignesDeLaBoucle);
+      
+      ennemis.forEach((ennemi: Ennemi) => {
+          const cercle_ennemi = ennemi.getEnnemiCercle();
+          const capture: boolean = this.Collides.collidePointPoly(cercle_ennemi.getPosX(), cercle_ennemi.getPosY(), polygone); 
+          
+          if (capture) {      
+            this.p5.serviceEnnemis.validerCaptureEnnemi(ennemi);
+          }
+      });
+      return polygone;
+    }
+
     conserverLignesBoucle(ligneDeCroisement: Line, listeLignesParcourues: Line[]) {
         const indexLigneCroisement = listeLignesParcourues.indexOf(ligneDeCroisement);    
         let resultat = listeLignesParcourues.slice(indexLigneCroisement+1);

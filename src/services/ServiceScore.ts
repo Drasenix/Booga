@@ -10,4 +10,10 @@ export class ServiceScore {
         this.p5 = p5;
         this.score = score;
     }
+
+    drawScore() {
+        this.p5.textSize(32);
+        this.p5.fill(0, 102, 153);
+        this.p5.text(this.score.toString(), window.innerWidth / 2, window.innerHeight - 10);
+    }
 }
