@@ -12,14 +12,14 @@ export class Ennemi {
     
     constructor(point: Point) {
         this.ennemi_cercle = new Circle(point.getPosX(), point.getPosY(), this.rayonCercle);
-        this.velocite_x = Math.random() * Math.round(Math.random()) ? 1 : -1;
-        this.velocite_y = Math.random() * Math.round(Math.random()) ? 1 : -1;
+        this.velocite_x = Math.random() * 5 * (Math.round(Math.random()) ? 1 : -1);
+        this.velocite_y = Math.random() * 5 * (Math.round(Math.random()) ? 1 : -1);
     }
 
     updatePosition() {
         if (
             this.ennemi_cercle.getPosX() + this.velocite_x > window.innerWidth ||
-            this.ennemi_cercle.getPosX() + this.velocite_x< 0
+            this.ennemi_cercle.getPosX() + this.velocite_x < 0
         ) {
             this.velocite_x = this.velocite_x * -1;
         }
