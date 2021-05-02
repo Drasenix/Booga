@@ -6,15 +6,15 @@ import { ServiceEnnemis } from "./serviceEnnemis";
 import { ServiceFormes } from "./serviceFormes";
 
 export class ServiceVaisseau {
-    p5: any;    
-    Collides: any = require("p5collide");;
-    serviceForme: ServiceFormes;
-    serviceEnnemis: ServiceEnnemis;
+    private p5: any;    
+    private Collides: any = require("p5collide");;
+    private serviceForme: ServiceFormes;
+    private serviceEnnemis: ServiceEnnemis;
     
-    indexPhaseAnimation: number = 0;
-    nbFrameAnimation: number = 10;    
-    nbMaxLignes = 100;    
-    
+    private indexPhaseAnimation: number = 0;
+    private nbFrameAnimation: number = 10;    
+    private nbMaxLignes = 100;    
+
     vaisseau: Vaisseau;    
 
     constructor(p5: any, serviceEnnemis: ServiceEnnemis, pos_x: number, pos_y: number) {

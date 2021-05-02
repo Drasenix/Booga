@@ -3,11 +3,11 @@ import { Circle } from "../class/Circle";
 import { Point } from "../class/Point";
 
 export class ServiceEnnemis {
-    p5: any;    
+    private p5: any;    
 
-    listeEnnemis: Ennemi[] = [];
+    private listeEnnemis: Ennemi[] = [];
 
-    nbEnnemis: number = 10;
+    private nbEnnemis: number = 10;
 
     constructor(p5: any) {
         this.p5 = p5;

@@ -4,10 +4,10 @@ import { Point } from "../class/Point";
 import { ServiceEnnemis } from "./serviceEnnemis";
 
 export class ServiceFormes {
-    p5: any;    
-    serviceEnnemis: ServiceEnnemis;
+    private p5: any;    
+    private serviceEnnemis: ServiceEnnemis;
     
-    Collides: any = require("p5collide");
+    private Collides: any = require("p5collide");
 
     constructor(p5: any,  serviceEnnemis: ServiceEnnemis) {
         this.p5 = p5;

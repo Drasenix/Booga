@@ -1,5 +1,6 @@
 import { Point } from "./class/Point";
 import { ServiceEnnemis } from "./services/serviceEnnemis";
+import { ServicePVs } from "./services/servicePV";
 import { ServiceVaisseau } from "./services/serviceVaisseau";
 
 // Exporting a function called 'mySketch'
@@ -11,7 +12,8 @@ export const boogaloopers = (p: any) => {
   
   const serviceEnnemis = new ServiceEnnemis(p);
   const serviceVaisseau = new ServiceVaisseau(p, serviceEnnemis, pos_x, pos_y);
-
+  const servicePVs = new ServicePVs(p, 5);
+  
   // Calling p5.js functions, using the variable 'p'
   p.setup = () => {
     // Creating a canvas using the entire screen of the webpage
@@ -29,6 +31,8 @@ export const boogaloopers = (p: any) => {
     serviceEnnemis.drawEnnemis();
 
     serviceVaisseau.drawVaisseau();
+
+    servicePVs.drawPVs();
       
   }
 
