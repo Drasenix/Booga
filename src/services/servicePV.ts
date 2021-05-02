@@ -17,7 +17,7 @@ export class ServicePVs {
 
     drawPVs() {
         for (let i =0; i < this.nbPVs; i++ ) {
-            this.p5.image(this.img, window.innerWidth - (i + 1) * this.largeur_img , window.innerHeight - (window.innerHeight / 10), this.largeur_img, this.hauteur_img);
+            this.p5.image(this.img, window.innerWidth - (i + 1) * this.largeur_img , window.innerHeight - this.hauteur_img, this.largeur_img, this.hauteur_img);
         }
     }
 

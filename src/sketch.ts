@@ -7,8 +7,8 @@ import { ServiceVaisseau } from "./services/serviceVaisseau";
 // Exporting a function called 'mySketch'
 export const boogaloopers = (p: any) => {
   
-  const largeur_images_hud = window.innerWidth / 25;
-  const hauteur_images_hud = window.innerHeight / 10;
+  const largeur_images_hud = window.innerWidth / 30;
+  const hauteur_images_hud = window.innerHeight / 15;
 
   let pos_x: number = window.innerWidth / 2;
   let pos_y: number = window.innerHeight / 2;    
@@ -37,7 +37,6 @@ export const boogaloopers = (p: any) => {
     serviceBombes.drawBombes();
     serviceEnnemis.drawEnnemis();
     serviceVaisseau.drawVaisseau();
-
       
   }
 

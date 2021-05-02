@@ -17,7 +17,7 @@ export class ServiceBombes {
 
     drawBombes() {
         for (let i =0; i < this.nbBombes; i++ ) {
-            this.p5.image(this.img, (i) * this.largeur_img, window.innerHeight - (window.innerHeight / 10), this.largeur_img, this.hauteur_img);
+            this.p5.image(this.img, (i) * this.largeur_img, window.innerHeight - this.hauteur_img, this.largeur_img, this.hauteur_img);
         }
     }
 
