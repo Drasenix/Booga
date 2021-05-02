@@ -11,8 +11,6 @@ export const boogaloopers = (p: any) => {
   const largeur_images_hud = window.innerWidth / 30;
   const hauteur_images_hud = window.innerHeight / 15;
 
-  let pos_x: number = window.innerWidth / 2;
-  let pos_y: number = window.innerHeight / 2;    
   let timer: any;  
   
   let instanciationTerminee = false;
@@ -20,20 +18,21 @@ export const boogaloopers = (p: any) => {
   // Calling p5.js functions, using the variable 'p'
   p.setup = async () => {
 
-    p.serviceVaisseau = new ServiceVaisseau(p, pos_x, pos_y);
+    p.serviceVaisseau = new ServiceVaisseau(p, p.mouseX, p.mouseY);
     p.serviceEnnemis = new ServiceEnnemis(p);
     p.serviceForme = new ServiceFormes(p);
     p.servicePVs = new ServicePVs(p, 5, largeur_images_hud, hauteur_images_hud);
     p.serviceBombes = new ServiceBombes(p, 3, largeur_images_hud, hauteur_images_hud);
 
+    p.serviceEnnemis.instancierEnnemis();
+    
     // Creating a canvas using the entire screen of the webpage
     p.createCanvas(window.innerWidth, window.innerHeight);
     p.background(0);
     p.noCursor();
     
-    p.serviceEnnemis.instancierEnnemis();
-
     instanciationTerminee = true;
+
   }
 
   p.draw = () => {
