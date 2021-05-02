@@ -3,6 +3,7 @@ import { ServiceBombes } from "./services/ServiceBombes";
 import { ServiceEnnemis } from "./services/serviceEnnemis";
 import { ServiceFormes } from "./services/serviceFormes";
 import { ServicePVs } from "./services/servicePV";
+import { ServiceScore } from "./services/ServiceScore";
 import { ServiceVaisseau } from "./services/serviceVaisseau";
 
 // Exporting a function called 'mySketch'
@@ -10,7 +11,7 @@ export const boogaloopers = (p: any) => {
   
   const largeur_images_hud = window.innerWidth / 30;
   const hauteur_images_hud = window.innerHeight / 15;
-
+  const score: number = 0;
   let timer: any;  
   
   let instanciationTerminee = false;
@@ -23,9 +24,10 @@ export const boogaloopers = (p: any) => {
     p.serviceForme = new ServiceFormes(p);
     p.servicePVs = new ServicePVs(p, 5, largeur_images_hud, hauteur_images_hud);
     p.serviceBombes = new ServiceBombes(p, 3, largeur_images_hud, hauteur_images_hud);
+    p.serviceScore = new ServiceScore(p, score);
 
     p.serviceEnnemis.instancierEnnemis();
-    
+
     // Creating a canvas using the entire screen of the webpage
     p.createCanvas(window.innerWidth, window.innerHeight);
     p.background(0);
@@ -47,14 +49,14 @@ export const boogaloopers = (p: any) => {
   }
 
   p.mouseMoved = () => {
-    p.gererDeplacement();
+    p.gererDeplacementCurseur();
   }
 
   p.mouseDragged = () => {
-    p.gererDeplacement();
+    p.gererDeplacementCurseur();
   }
 
-  p.gererDeplacement  = () => {
+  p.gererDeplacementCurseur = () => {
     if (instanciationTerminee) {
       const point: Point = new Point(p.mouseX, p.mouseY);
       
