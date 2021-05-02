@@ -25,8 +25,8 @@ export class Ennemi {
     }
 
     updatePosition() {
-        this.score.setPos_x(this.ennemi_cercle.getPosX());
-        this.score.setPos_y(this.ennemi_cercle.getPosY());
+        const nouveauPointScore = new Point(this.ennemi_cercle.getPosX(), this.ennemi_cercle.getPosY());
+        this.score.setPoint(nouveauPointScore);
         if (
             this.ennemi_cercle.getPosX() + this.velocite_x > window.innerWidth ||
             this.ennemi_cercle.getPosX() + this.velocite_x < 0

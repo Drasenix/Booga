@@ -1,3 +1,5 @@
+import { Line } from "../class/Line";
+import { Point } from "../class/Point";
 import { Score } from "../class/Score";
 
 
@@ -21,14 +23,32 @@ export class ServiceScore {
     public drawScorePartie() {
         this.p5.textSize(this.scoreGlobal.getSize());
         this.p5.fill(0, 102, 153);
-        this.p5.text(this.scoreGlobal.getValeur(), this.scoreGlobal.getPos_x(), this.scoreGlobal.getPos_y());
+        this.p5.text(this.scoreGlobal.getValeur(), this.scoreGlobal.getPoint().getPosX(), this.scoreGlobal.getPoint().getPosY());
     }
 
     public drawScores() {
         this.listeScoresAAfficher.forEach((score: Score) => {
             this.p5.textSize(score.getSize());
-            this.p5.fill(0, 102, 153);
-            this.p5.text(score.getValeur(), score.getPos_x(), score.getPos_y());
+            this.p5.fill(0, 153, 102);
+            this.p5.text(score.getValeur(), score.getPoint().getPosX(), score.getPoint().getPosY());
+            this.animerScore(score);
+        });
+    }
+
+    async animerScore(score: Score) {
+        const nouveauPoint = new Point(score.getPoint().getPosX(), score.getPoint().getPosY() - 1);
+
+        score.setPoint(nouveauPoint);
+        score.validerFrameAnimation();
+        
+        if (score.getNbFramesAnimation() === 0 ) {
+            this.retirerScoreDeListeDesScoresAAfficher(score);
+        }
+    }
+
+    public retirerScoreDeListeDesScoresAAfficher(score: Score) {
+        this.listeScoresAAfficher = this.listeScoresAAfficher.filter((scoreAAfficher: Score) => {
+            return scoreAAfficher !== score;
         });
     }
 

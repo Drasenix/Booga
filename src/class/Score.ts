@@ -1,11 +1,12 @@
+import { Point } from "./Point";
 
 export class Score {
 
-    private valeur: number;
-    
-    private pos_x: number;    
-    private pos_y: number;    
+    private valeur: number;    
+    private point: Point;    
     private size: number;    
+    private nbFramesAnimation: number;
+    
 
     constructor(
         valeur: number,
@@ -14,13 +15,17 @@ export class Score {
         size: number
     ) {
         this.valeur = valeur;
-        this.pos_x = pos_x;
-        this.pos_y = pos_y;
+        this.point = new Point(pos_x, pos_y);
         this.size = size;
+        this.nbFramesAnimation = 50;
     }
 
-    ajouterScore(score: number) {
+    public ajouterScore(score: number) {
         this.valeur += score;
+    }
+
+    public validerFrameAnimation() {
+        this.nbFramesAnimation = this.nbFramesAnimation - 1;
     }
 
     public getValeur(): number {
@@ -29,25 +34,28 @@ export class Score {
     public setValeur(value: number) {
         this.valeur = value;
     }
-
-    public getPos_x(): number {
-        return this.pos_x;
-    }
-    public setPos_x(value: number) {
-        this.pos_x = value;
-    }
-
-    public getPos_y(): number {
-        return this.pos_y;
-    }
-    public setPos_y(value: number) {
-        this.pos_y = value;
-    }
-
+  
     public getSize(): number {
         return this.size;
     }
     public setSize(value: number) {
         this.size = value;
     }
+
+    public getPoint(): Point {
+        return this.point;
+    }
+    public setPoint(value: Point) {
+        this.point = value;
+    }
+
+    public getNbFramesAnimation(): number {
+        return this.nbFramesAnimation;
+    }
+    public setNbFramesAnimation(value: number) {
+        this.nbFramesAnimation = value;
+    }
+    
+    
+
 }
