@@ -1,35 +1,38 @@
 import { Circle } from "../class/Circle";
 import { Line } from "../class/Line";
 import { Point } from "../class/Point";
+import { Vaisseau } from "../class/Vaisseau";
 import { ServiceEnnemis } from "./serviceEnnemis";
 import { ServiceFormes } from "./serviceFormes";
 
 export class ServiceVaisseau {
     p5: any;    
-    serviceForme: ServiceFormes;
     Collides: any = require("p5collide");;
+    serviceForme: ServiceFormes;
     serviceEnnemis: ServiceEnnemis;
-
+    
     indexPhaseAnimation: number = 0;
-    nbFrameAnimation: number = 10;
-    formeBoucle: any[] = [];
-    nbMaxLignes = 100;
-    historiquesCoordonneesCurseur: Point[] = [];
-    pointeur_cercle: Circle | undefined;
+    nbFrameAnimation: number = 10;    
+    nbMaxLignes = 100;    
+    
+    vaisseau: Vaisseau;    
 
-    constructor(p5: any, serviceEnnemis: ServiceEnnemis) {
+    constructor(p5: any, serviceEnnemis: ServiceEnnemis, pos_x: number, pos_y: number) {
         this.p5 = p5;
         this.serviceForme = new ServiceFormes(p5, serviceEnnemis);
         this.serviceEnnemis = serviceEnnemis;
+        this.vaisseau = new Vaisseau(pos_x, pos_y);
     }
 
     drawFormeBoucle() {    
-        if (this.formeBoucle.length > 0 && this.indexPhaseAnimation > 0) {
+        if (this.vaisseau.getFormeBoucle().length > 0 && this.indexPhaseAnimation > 0) {
             this.p5.beginShape();
-            for (const { x, y } of this.formeBoucle)  this.p5.vertex(x, y);
+            for (const { x, y } of this.vaisseau.getFormeBoucle())  this.p5.vertex(x, y);
             this.p5.endShape(this.Collides.CLOSE);
 
-            this.formeBoucle = this.serviceForme.diminuerFormeDeMoitieVersLeCentre(this.formeBoucle);
+            this.vaisseau.setFormeBoucle(
+              this.serviceForme.diminuerFormeDeMoitieVersLeCentre(this.vaisseau.getFormeBoucle())
+            );
             this.indexPhaseAnimation--;
         }
     }
@@ -39,14 +42,15 @@ export class ServiceVaisseau {
       this.drawLines();
       
       this.p5.noStroke();
-      if (this.pointeur_cercle) {
-        this.p5.circle(this.pointeur_cercle.getPosX(), this.pointeur_cercle.getPosY(), this.pointeur_cercle.getRayon());
+
+      if (this.vaisseau.getPointeurCercle()) {
+        this.p5.circle(this.vaisseau.getPointeurCercle().getPosX(), this.vaisseau.getPointeurCercle().getPosY(), this.vaisseau.getPointeurCercle().getRayon());
       }
     }
 
     drawLines() {
-        if (this.historiquesCoordonneesCurseur.length >= 2) {
-          const listeLignesParcourues = this.calculerLignesParcourues(this.historiquesCoordonneesCurseur);
+        if (this.vaisseau.getHistoriquesCoordonneesCurseur().length >= 2) {
+          const listeLignesParcourues = this.calculerLignesParcourues(this.vaisseau.getHistoriquesCoordonneesCurseur());
           
           (listeLignesParcourues).forEach((ligne: Line) => {
             this.p5.strokeWeight(5);
@@ -56,16 +60,21 @@ export class ServiceVaisseau {
         }
     }    
 
-    instancierCurseur(pos_x: number, pos_y: number) {
-        this.pointeur_cercle = new Circle(pos_x, pos_y, 50);
+    gererDeplacementVaisseau(point: Point) {
+      this.vaisseau.updatePosition(point);
+      this.gererHistoriqueCoordonnes(point);
+      
+      this.verifierSiBoucleComplete();
+      clearTimeout(this.p5.timer);
+      this.p5.timer=setTimeout(this.p5.mouseStopped,200);
     }
 
     gererHistoriqueCoordonnes(point: Point) {
-        if (this.historiquesCoordonneesCurseur.length === this.nbMaxLignes) {
-          this.historiquesCoordonneesCurseur.shift();
+        if (this.vaisseau.getHistoriquesCoordonneesCurseur().length === this.nbMaxLignes) {
+          this.vaisseau.getHistoriquesCoordonneesCurseur().shift();
         }
-        this.historiquesCoordonneesCurseur.push(point);
-      }
+        this.vaisseau.getHistoriquesCoordonneesCurseur().push(point);
+    }
     
     calculerLignesParcourues(listePoints: Point[]) {
         const longueurTab = listePoints.length;
@@ -88,8 +97,8 @@ export class ServiceVaisseau {
     }
     
     verifierSiBoucleComplete() {
-        if (this.historiquesCoordonneesCurseur.length >= 2) {
-          let listeLignesParcourues: Line[] = this.calculerLignesParcourues(this.historiquesCoordonneesCurseur);
+        if (this.vaisseau.getHistoriquesCoordonneesCurseur().length >= 2) {
+          let listeLignesParcourues: Line[] = this.calculerLignesParcourues(this.vaisseau.getHistoriquesCoordonneesCurseur());
           const derniereLigne: Line | undefined = listeLignesParcourues.pop();
           const ligneEnTrop: Line | undefined = listeLignesParcourues.pop();
     
@@ -115,19 +124,20 @@ export class ServiceVaisseau {
     }
       
     validerBoucle = (forme: []) => {
-        this.historiquesCoordonneesCurseur = [];
-        this.formeBoucle = forme;
+        this.vaisseau.setHistoriquesCoordonneesCurseur([]);
+        this.vaisseau.setFormeBoucle(forme);
+        this.indexPhaseAnimation = this.nbFrameAnimation;    
         this.indexPhaseAnimation = this.nbFrameAnimation;    
     }   
     
     async effacerHistoriqueAvecLatence(ms: number) {
         if (ms > 0 ) {
-          while (this.historiquesCoordonneesCurseur.length > 0) {
-            this.historiquesCoordonneesCurseur.shift();
+          while (this.vaisseau.getHistoriquesCoordonneesCurseur().length > 0) {
+            this.vaisseau.getHistoriquesCoordonneesCurseur().shift();
             await this.p5.sleep(ms);
           }
         } else {
-          this.historiquesCoordonneesCurseur = [];
+          this.vaisseau.setHistoriquesCoordonneesCurseur([]);
         }
     }
 }

@@ -1,8 +1,5 @@
-import { Circle } from "./class/Circle";
-import { Line } from "./class/Line";
 import { Point } from "./class/Point";
 import { ServiceEnnemis } from "./services/serviceEnnemis";
-import { ServiceFormes } from "./services/serviceFormes";
 import { ServiceVaisseau } from "./services/serviceVaisseau";
 
 // Exporting a function called 'mySketch'
@@ -13,7 +10,7 @@ export const boogaloopers = (p: any) => {
   let timer: any;  
   
   const serviceEnnemis = new ServiceEnnemis(p);
-  const serviceVaisseau = new ServiceVaisseau(p, serviceEnnemis);
+  const serviceVaisseau = new ServiceVaisseau(p, serviceEnnemis, pos_x, pos_y);
 
   // Calling p5.js functions, using the variable 'p'
   p.setup = () => {
@@ -22,7 +19,6 @@ export const boogaloopers = (p: any) => {
     p.background(255);
     p.noCursor();
     
-    serviceVaisseau.instancierCurseur(pos_x, pos_y);
     serviceEnnemis.instancierEnnemis();
   }
 
@@ -47,16 +43,7 @@ export const boogaloopers = (p: any) => {
   p.gererDeplacement  = () => {
     const point: Point = new Point(p.mouseX, p.mouseY);
     
-    if (serviceVaisseau.pointeur_cercle) {
-      serviceVaisseau.pointeur_cercle.setPosX(point.getPosX());
-      serviceVaisseau.pointeur_cercle.setPosY(point.getPosY());
-  
-      serviceVaisseau.gererHistoriqueCoordonnes(point);
-      
-      serviceVaisseau.verifierSiBoucleComplete();
-      clearTimeout(timer);
-      timer=setTimeout(p.mouseStopped,200);
-    }
+    serviceVaisseau.gererDeplacementVaisseau(point);    
   }
 
   p.mouseStopped = async () => {
