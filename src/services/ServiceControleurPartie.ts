@@ -50,7 +50,7 @@ export class ServiceControleurPartie {
 
         this.serviceNiveau.instancierNumeroNiveau(numeroNiveau);
         this.serviceEnnemis.instancierEnnemis(this.serviceNiveau.getNiveauActuel().getNbEnnemis());
-        
+        this.serviceVaisseau.rendreVaisseauInvincibleTemporairement(1000);
         this.p5.instanciationTerminee = true;
     }
 
@@ -72,6 +72,7 @@ export class ServiceControleurPartie {
         this.serviceNiveau.instancierNumeroNiveau(numeroNiveau);
         this.serviceVaisseau = new ServiceVaisseau(this.p5, this.p5.mouseX, this.p5.mouseY);
         this.serviceEnnemis.instancierEnnemis(this.serviceNiveau.getNiveauActuel().getNbEnnemis());
+        this.serviceVaisseau.rendreVaisseauInvincibleTemporairement(1000);
     }
 
     perdrePartie() {
