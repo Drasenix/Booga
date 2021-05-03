@@ -23,8 +23,8 @@ export class ServiceControleurPartie {
     private serviceScore: ServiceScore;
        
     private partiePerdue: boolean;
-    
-    
+    private partieGagnee: boolean;
+        
 
     constructor(p5: any) {
         this.p5 = p5;     
@@ -33,6 +33,7 @@ export class ServiceControleurPartie {
         this.hauteur_images_hud = window.innerHeight / 15;
         this.score = 0;
         this.partiePerdue = false;
+        this.partieGagnee = false;
         this.p5.instanciationTerminee = false;
 
         this.serviceMenus = new ServiceMenus(this.p5);
@@ -50,6 +51,10 @@ export class ServiceControleurPartie {
 
     perdrePartie() {
         this.partiePerdue = true;
+    }
+
+    gagnerPartie() {
+        this.partieGagnee = true;
     }
 
     relancerPartie() {
@@ -103,4 +108,10 @@ export class ServiceControleurPartie {
     public setServiceScore(value: ServiceScore) {
         this.serviceScore = value;
     }   
+    public isPartieGagnee(): boolean {
+        return this.partieGagnee;
+    }
+    public setPartieGagnee(value: boolean) {
+        this.partieGagnee = value;
+    }
 }

@@ -23,6 +23,8 @@ export const boogaloopers = (p: any) => {
 
     if (p.serviceControleurPartie.ispartiePerdue()) {
       p.drawPartiePerdue();
+    } else if (p.serviceControleurPartie.isPartieGagnee()) {
+      p.drawPartieGagnee();
     } else {
       p.drawPartieEnCours();
     }
@@ -45,6 +47,10 @@ export const boogaloopers = (p: any) => {
     p.serviceControleurPartie.getServiceMenus().drawPartiePerdue();
   }
   
+  p.drawPartieGagnee = () => {    
+    p.serviceControleurPartie.getServiceMenus().drawPartieGagnee();
+  }
+
   p.mouseMoved = () => {
     p.gererDeplacementCurseur();
   }
@@ -54,7 +60,7 @@ export const boogaloopers = (p: any) => {
   }
 
   p.mouseClicked = () => {
-    if (p.serviceControleurPartie.ispartiePerdue()) {
+    if (p.serviceControleurPartie.ispartiePerdue() || p.serviceControleurPartie.isPartieGagnee()) {
       p.serviceControleurPartie = p.serviceControleurPartie.relancerPartie();
     }
   }
