@@ -14,13 +14,13 @@ export class ServiceScore {
     private sizeScoreGlobal: number = 32;
     private valeurScoreCollision: number = -100;
     private listeScoresAAfficher: Score[];
-    private listeMultiplicateursAAfficher: Multiplicateur[];
+    private multiplicateursAAfficher: Multiplicateur | null;
 
     constructor(p5: any, score: number) {
         this.p5 = p5;
         this.scoreGlobal = new Score(score, this.positionScoreX, this.positionScoreY, this.sizeScoreGlobal);
         this.listeScoresAAfficher = [];
-        this.listeMultiplicateursAAfficher= [];
+        this.multiplicateursAAfficher = null;
     }
 
     public drawScorePartie() {
@@ -37,12 +37,17 @@ export class ServiceScore {
             this.animerScore(score);
         });
 
-        this.listeMultiplicateursAAfficher.forEach((multiplicateur: Multiplicateur)  => {
-            this.p5.textSize(multiplicateur.getTaille());
-            this.p5.fill(0, 153, 102);
-            this.p5.text(multiplicateur.getText(), multiplicateur.getPoint().getPosX(), multiplicateur.getPoint().getPosY());
-            this.animerMultiplicateur(multiplicateur);
-        }); 
+        this.drawCombo();
+    }
+    
+    drawCombo() {
+
+        if (this.multiplicateursAAfficher) {
+            this.p5.textSize(this.multiplicateursAAfficher.getTaille());
+            this.p5.fill(153, 153, 102);
+            this.p5.text(this.multiplicateursAAfficher.getText(), this.multiplicateursAAfficher.getPoint().getPosX(), this.multiplicateursAAfficher.getPoint().getPosY());
+            this.animerMultiplicateur(this.multiplicateursAAfficher);
+        }
     }
 
     animerScore(score: Score) {
@@ -63,7 +68,7 @@ export class ServiceScore {
         multiplicateur.validerFrameAnimation();
         
         if (multiplicateur.getNbFramesAnimation() === 0 ) {
-            this.retirerMultiplicateurDeListeDesMultiplicateursAAfficher(multiplicateur);
+            this.supprimerCombo();
         }
     }
 
@@ -81,10 +86,8 @@ export class ServiceScore {
         });
     }
 
-    public retirerMultiplicateurDeListeDesMultiplicateursAAfficher(multiplicateur: Multiplicateur) {
-        this.listeMultiplicateursAAfficher = this.listeMultiplicateursAAfficher.filter((multiplicateurAAfficher: Multiplicateur) => {
-            return multiplicateurAAfficher !== multiplicateur;
-        });
+    public supprimerCombo() {
+        this.multiplicateursAAfficher = null;
     }
 
     public augmenterScoreGlobal(score: Score) {
@@ -96,7 +99,7 @@ export class ServiceScore {
     }
 
     public ajouterMultiplicateurToDraw(multiplicateur: Multiplicateur) {
-        this.listeMultiplicateursAAfficher.push(multiplicateur);
+        this.multiplicateursAAfficher = multiplicateur;
     }
 
     public getScoreGlobal(): Score {
