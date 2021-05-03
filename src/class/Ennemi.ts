@@ -19,7 +19,7 @@ export class Ennemi {
         this.velocite_x = Math.random() * 5 * (Math.round(Math.random()) ? 1 : -1);
         this.velocite_y = Math.random() * 5 * (Math.round(Math.random()) ? 1 : -1);
     
-        const valueScore = (Math.round(Math.random() * 10 )) * 10;
+        const valueScore = 50;
         const tailleScore = 32;
         this.score = new Score(valueScore, point.getPosX(), point.getPosY(), tailleScore);
     }

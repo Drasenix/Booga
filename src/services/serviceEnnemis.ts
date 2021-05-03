@@ -58,9 +58,7 @@ export class ServiceEnnemis {
     }
 
     validerCaptureEnnemi(ennemi: Ennemi) {
-        this.supprimerEnnemi(ennemi);
-        this.p5.serviceControleurPartie.getServiceScore().augmenterScoreGlobal(ennemi.getScore());
-        this.p5.serviceControleurPartie.getServiceScore().ajouterScoreToDraw(ennemi.getScore());
+        this.supprimerEnnemi(ennemi);       
         
         if (this.listeEnnemis.length === 0) {
             this.p5.serviceControleurPartie.gagnerPartie();

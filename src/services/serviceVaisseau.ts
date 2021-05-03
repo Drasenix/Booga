@@ -1,6 +1,8 @@
 import { Ennemi } from "../class/Ennemi";
 import { Line } from "../class/Line";
+import { Multiplicateur } from "../class/Multiplicateur";
 import { Point } from "../class/Point";
+import { Score } from "../class/Score";
 import { Vaisseau } from "../class/Vaisseau";
 
 export class ServiceVaisseau {
@@ -139,12 +141,28 @@ export class ServiceVaisseau {
     verifierCaptureEnnemis(lignesDeLaBoucle: Line[], ennemis: Ennemi[]) {
       const polygone: [] = this.p5.serviceControleurPartie.getServiceForme().formePolygonaleFromLines(lignesDeLaBoucle);
       
+      let nbEnnemiCaptures = 0;
+
       ennemis.forEach((ennemi: Ennemi) => {
           const cercle_ennemi = ennemi.getEnnemiCercle();
           const capture: boolean = this.Collides.collidePointPoly(cercle_ennemi.getPosX(), cercle_ennemi.getPosY(), polygone); 
           
-          if (capture) {      
+          if (capture) {
+            nbEnnemiCaptures++;      
             this.p5.serviceControleurPartie.getServiceEnnemis().validerCaptureEnnemi(ennemi);
+            
+            const multiplicateur: Multiplicateur = new Multiplicateur(
+              nbEnnemiCaptures,
+              ennemi.getScore().getPoint().getPosX() + 100,
+              ennemi.getScore().getPoint().getPosY() 
+            );
+            const combo: Score = multiplicateur.appliquerMultiplicateurSurScore(ennemi.getScore());            
+            this.p5.serviceControleurPartie.getServiceScore().augmenterScoreGlobal(combo);
+            this.p5.serviceControleurPartie.getServiceScore().ajouterScoreToDraw(combo);
+            
+            if (nbEnnemiCaptures > 1 ) {
+              this.p5.serviceControleurPartie.getServiceScore().ajouterMultiplicateurToDraw(multiplicateur);
+            }
           }
       });
       return polygone;

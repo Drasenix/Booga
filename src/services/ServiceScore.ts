@@ -1,4 +1,5 @@
 import { Line } from "../class/Line";
+import { Multiplicateur } from "../class/Multiplicateur";
 import { Point } from "../class/Point";
 import { Score } from "../class/Score";
 
@@ -13,11 +14,13 @@ export class ServiceScore {
     private sizeScoreGlobal: number = 32;
     private valeurScoreCollision: number = -100;
     private listeScoresAAfficher: Score[];
+    private listeMultiplicateursAAfficher: Multiplicateur[];
 
     constructor(p5: any, score: number) {
         this.p5 = p5;
         this.scoreGlobal = new Score(score, this.positionScoreX, this.positionScoreY, this.sizeScoreGlobal);
         this.listeScoresAAfficher = [];
+        this.listeMultiplicateursAAfficher= [];
     }
 
     public drawScorePartie() {
@@ -33,9 +36,16 @@ export class ServiceScore {
             this.p5.text(score.getValeur(), score.getPoint().getPosX(), score.getPoint().getPosY());
             this.animerScore(score);
         });
+
+        this.listeMultiplicateursAAfficher.forEach((multiplicateur: Multiplicateur)  => {
+            this.p5.textSize(multiplicateur.getTaille());
+            this.p5.fill(0, 153, 102);
+            this.p5.text(multiplicateur.getText(), multiplicateur.getPoint().getPosX(), multiplicateur.getPoint().getPosY());
+            this.animerMultiplicateur(multiplicateur);
+        }); 
     }
 
-    async animerScore(score: Score) {
+    animerScore(score: Score) {
         const nouveauPoint = new Point(score.getPoint().getPosX(), score.getPoint().getPosY() - 1);
 
         score.setPoint(nouveauPoint);
@@ -43,6 +53,17 @@ export class ServiceScore {
         
         if (score.getNbFramesAnimation() === 0 ) {
             this.retirerScoreDeListeDesScoresAAfficher(score);
+        }
+    }
+
+    animerMultiplicateur(multiplicateur: Multiplicateur) {
+        const nouveauPoint = new Point(multiplicateur.getPoint().getPosX(), multiplicateur.getPoint().getPosY() - 1);
+
+        multiplicateur.setPoint(nouveauPoint);
+        multiplicateur.validerFrameAnimation();
+        
+        if (multiplicateur.getNbFramesAnimation() === 0 ) {
+            this.retirerMultiplicateurDeListeDesMultiplicateursAAfficher(multiplicateur);
         }
     }
 
@@ -60,12 +81,22 @@ export class ServiceScore {
         });
     }
 
+    public retirerMultiplicateurDeListeDesMultiplicateursAAfficher(multiplicateur: Multiplicateur) {
+        this.listeMultiplicateursAAfficher = this.listeMultiplicateursAAfficher.filter((multiplicateurAAfficher: Multiplicateur) => {
+            return multiplicateurAAfficher !== multiplicateur;
+        });
+    }
+
     public augmenterScoreGlobal(score: Score) {
         this.scoreGlobal.ajouterScore(score.getValeur());
     }
 
     public ajouterScoreToDraw(score: Score) {
         this.listeScoresAAfficher.push(score);
+    }
+
+    public ajouterMultiplicateurToDraw(multiplicateur: Multiplicateur) {
+        this.listeMultiplicateursAAfficher.push(multiplicateur);
     }
 
     public getScoreGlobal(): Score {
