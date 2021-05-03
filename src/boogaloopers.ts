@@ -11,7 +11,7 @@ export const boogaloopers = (p: any) => {
   // Calling p5.js functions, using the variable 'p'
   p.setup = async () => {
     p.instanciationTerminee = false;
-    p.serviceControleurPartie = new ServiceControleurPartie(p);         
+    p.serviceControleurPartie = new ServiceControleurPartie(p, 1);         
     // Creating a canvas using the entire screen of the webpage
     p.createCanvas(window.innerWidth, window.innerHeight);
     p.background(0);
@@ -60,8 +60,13 @@ export const boogaloopers = (p: any) => {
   }
 
   p.mouseClicked = () => {
-    if (p.serviceControleurPartie.ispartiePerdue() || p.serviceControleurPartie.isPartieGagnee()) {
-      p.serviceControleurPartie = p.serviceControleurPartie.relancerPartie();
+    if (p.serviceControleurPartie.ispartiePerdue()) {
+      p.serviceControleurPartie = p.serviceControleurPartie.instancierNouvellePartie();
+    }
+
+    if (p.serviceControleurPartie.isPartieGagnee()) {
+      const niveauSuivant = p.serviceControleurPartie.getServiceNiveau().getNiveauActuel().getNumeroNiveau() + 1;
+      p.serviceControleurPartie.lancerNouveauNiveau(niveauSuivant);
     }
   }
 

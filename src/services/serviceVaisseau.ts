@@ -1,4 +1,3 @@
-import { Circle } from "../class/Circle";
 import { Ennemi } from "../class/Ennemi";
 import { Line } from "../class/Line";
 import { Point } from "../class/Point";

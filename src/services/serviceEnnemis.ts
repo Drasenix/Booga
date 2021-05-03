@@ -5,21 +5,19 @@ import { Point } from "../class/Point";
 export class ServiceEnnemis {
     private p5: any;    
 
-    private listeEnnemis: Ennemi[] = [];
-    
-    private nbEnnemis: number = 10;
+    private listeEnnemis: Ennemi[] = [];    
 
     constructor(p5: any) {
         this.p5 = p5;
     }
 
-    instancierEnnemis() {
+    instancierEnnemis(nbEnnemis: number) {
 
         let point_ennemi_actuel: Point;
         const hauteur_fenetre = window.innerHeight;
         const largeur_fenetre = window.innerWidth;
 
-        for (let i = 0; i < this.nbEnnemis;  i++) {
+        for (let i = 0; i < nbEnnemis;  i++) {
             point_ennemi_actuel = new Point(Math.random() * largeur_fenetre, Math.random() * hauteur_fenetre);            
             this.listeEnnemis.push(new Ennemi(point_ennemi_actuel));
         }
