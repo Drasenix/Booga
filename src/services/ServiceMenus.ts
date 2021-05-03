@@ -25,6 +25,11 @@ export class ServiceMenus {
             window.innerWidth / 2 - 3 * this.tailleTexteGameOver,
             window.innerHeight / 2 + this.tailleTexteGameOver
         );
+        this.p5.text(
+            'Niveau : ' + this.p5.serviceControleurPartie.getServiceNiveau().getNiveauActuel().getNumeroNiveau(),
+            window.innerWidth / 2 - 3 * this.tailleTexteGameOver,
+            window.innerHeight / 2 +  2 * this.tailleTexteGameOver
+        );
     } 
     
     drawPartieGagnee() {
@@ -41,6 +46,11 @@ export class ServiceMenus {
             'Score : ' + this.p5.serviceControleurPartie.getServiceScore().getScoreGlobal().getValeur(),
             window.innerWidth / 2 - 3 * this.tailleTexteGameOver,
             window.innerHeight / 2 + this.tailleTexteGameOver
+        );
+        this.p5.text(
+            'Niveau : ' + this.p5.serviceControleurPartie.getServiceNiveau().getNiveauActuel().getNumeroNiveau(),
+            window.innerWidth / 2 - 3 * this.tailleTexteGameOver,
+            window.innerHeight / 2 +  2 * this.tailleTexteGameOver
         );
     }
 
