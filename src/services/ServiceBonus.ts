@@ -33,6 +33,13 @@ export class ServiceBonus {
         );
     }
 
+    utiliserBouclier() {
+        if (this.nbBonus) {
+            this.nbBonus --;
+            this.p5.serviceControleurPartie.getServiceVaisseau().rendreVaisseauInvincibleTemporairement(this.p5.serviceControleurPartie.getServiceVaisseau().getDureeBoucliers());
+        }
+    }
+
     public getNbBonus(): number {
         return this.nbBonus;
     }

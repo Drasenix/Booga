@@ -70,6 +70,12 @@ export const boogaloopers = (p: any) => {
     }
   }
 
+  p.keyPressed = () => {
+    if (p.keyCode === 32) {
+      p.serviceControleurPartie.getServiceBonus().utiliserBouclier();
+    }
+  }
+
   p.gererDeplacementCurseur = () => {
     if (p.instanciationTerminee) {
       const point: Point = new Point(p.mouseX, p.mouseY);

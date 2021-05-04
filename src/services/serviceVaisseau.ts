@@ -17,6 +17,7 @@ export class ServiceVaisseau {
     private couleurVaisseau;
 
     private vaisseau: Vaisseau;    
+    private dureeBoucliers: number;
   
 
     constructor(
@@ -27,6 +28,7 @@ export class ServiceVaisseau {
         this.p5 = p5;
         this.vaisseau = new Vaisseau(pos_x, pos_y);
         this.couleurVaisseau = this.p5.color(255, 255, 255);
+        this.dureeBoucliers = 1000;
     }
 
     drawFormeBoucle() {    
@@ -80,7 +82,7 @@ export class ServiceVaisseau {
     
     appliquerEffetsCollision() {
       this.effacerHistoriqueCoordonneesCurseur();
-      this.rendreVaisseauInvincibleTemporairement(2000);
+      this.rendreVaisseauInvincibleTemporairement(this.getDureeBoucliers() * 2);
       this.p5.serviceControleurPartie.getServicePVs().reduirePVs();
       this.p5.serviceControleurPartie.getServiceScore().perdreScoreCollision(this.vaisseau.getPointeurCercle().getPosX(), this.vaisseau.getPointeurCercle().getPosY());
     }   
@@ -235,5 +237,12 @@ export class ServiceVaisseau {
 
     public setVaisseau(value: Vaisseau) {
       this.vaisseau = value;
+    }
+
+    public getDureeBoucliers(): number {
+      return this.dureeBoucliers;
+    }
+    public setDureeBoucliers(value: number) {
+      this.dureeBoucliers = value;
     }
 }
