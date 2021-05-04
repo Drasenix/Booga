@@ -62,6 +62,17 @@ export class ServiceBonus {
         this.itemsBoucliers.push(itemBouclier);
     }
 
+    validerCaptureItemBouclier(itemBouclier: ItemBouclier) {
+        this.supprimerItemBouclier(itemBouclier);
+        this.nbBonus ++;
+    }
+
+    supprimerItemBouclier(itemBouclier: ItemBouclier) {
+        this.itemsBoucliers = this.itemsBoucliers.filter( (itemBouclierActuel: ItemBouclier) => {
+            return itemBouclier !== itemBouclierActuel;
+        })
+    }
+
     public getNbBonus(): number {
         return this.nbBonus;
     }

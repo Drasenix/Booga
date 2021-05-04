@@ -45,7 +45,7 @@ export class ServiceControleurPartie {
         this.serviceVaisseau = new ServiceVaisseau(this.p5, this.p5.mouseX, this.p5.mouseY);
         this.serviceEnnemis = new ServiceEnnemis(this.p5);
         this.serviceForme = new ServiceFormes(this.p5);
-        this.servicePVs = new ServicePVs(this.p5, 2, this.largeur_images_hud, this.hauteur_images_hud);
+        this.servicePVs = new ServicePVs(this.p5, 3, this.largeur_images_hud, this.hauteur_images_hud);
         this.serviceBonus = new ServiceBonus(this.p5, 3, this.largeur_images_hud, this.hauteur_images_hud);
         this.serviceScore = new ServiceScore(this.p5, this.score);
 

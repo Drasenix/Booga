@@ -1,4 +1,5 @@
 import { Ennemi } from "../class/Ennemi";
+import { ItemBouclier } from "../class/ItemBouclier";
 import { Line } from "../class/Line";
 import { Multiplicateur } from "../class/Multiplicateur";
 import { Point } from "../class/Point";
@@ -133,20 +134,25 @@ export class ServiceVaisseau {
               listeLignesParcourues.push(derniereLigne);
               const lignesDeLaBoucle: Line[] = this.conserverLignesBoucle(ligneDeCroisement, listeLignesParcourues);
               
-              const formeCreee: [] = this.verifierCaptureEnnemis(lignesDeLaBoucle, this.p5.serviceControleurPartie.getServiceEnnemis().getListeEnnemis());
+              const formeCreee: [] = this.construireBoucle(lignesDeLaBoucle);
+              this.verifierCaptureItemBoucliers(formeCreee, this.p5.serviceControleurPartie.getServiceBonus().getItemsBoucliers());
+              this.verifierCaptureEnnemis(formeCreee, this.p5.serviceControleurPartie.getServiceEnnemis().getListeEnnemis());
               this.validerBoucle(formeCreee);
           }
         }
     }
     
-    verifierCaptureEnnemis(lignesDeLaBoucle: Line[], ennemis: Ennemi[]) {
-      const polygone: [] = this.p5.serviceControleurPartie.getServiceForme().formePolygonaleFromLines(lignesDeLaBoucle);
+    construireBoucle(lignesDeLaBoucle: Line[]) {
+      return this.p5.serviceControleurPartie.getServiceForme().formePolygonaleFromLines(lignesDeLaBoucle);
+    }
+
+    verifierCaptureEnnemis(polygoneBoucle: [], ennemis: Ennemi[]) {
       
       let nbEnnemiCaptures = 0;
 
       ennemis.forEach((ennemi: Ennemi) => {
           const cercle_ennemi = ennemi.getEnnemiCercle();
-          const capture: boolean = this.Collides.collidePointPoly(cercle_ennemi.getPosX(), cercle_ennemi.getPosY(), polygone); 
+          const capture: boolean = this.Collides.collidePointPoly(cercle_ennemi.getPosX(), cercle_ennemi.getPosY(), polygoneBoucle); 
           
           if (capture) {
             nbEnnemiCaptures++;      
@@ -166,8 +172,19 @@ export class ServiceVaisseau {
             }
           }
       });
-      return polygone;
     }
+
+    verifierCaptureItemBoucliers(polygoneBoucle: [], itemsBoucliers: ItemBouclier[])  {
+      itemsBoucliers.forEach((itemBouclier: ItemBouclier) => {
+        const pointItem = itemBouclier.getPoint();
+        const capture: boolean = this.Collides.collidePointPoly(pointItem.getPosX(), pointItem.getPosY(), polygoneBoucle);
+
+        if (capture) {
+          this.p5.serviceControleurPartie.getServiceBonus().validerCaptureItemBouclier(itemBouclier);
+        }
+      });
+    }
+
 
     conserverLignesBoucle(ligneDeCroisement: Line, listeLignesParcourues: Line[]) {
         const indexLigneCroisement = listeLignesParcourues.indexOf(ligneDeCroisement);    

@@ -26,7 +26,7 @@ export class Ennemi {
         this.score = new Score(valueScore, point.getPosX(), point.getPosY(), tailleScore);
 
         const random = Math.random() * 10;
-        this.contientBonus = random < 2 ? true : false; 
+        this.contientBonus = random < 0.5 ? true : false; 
     }
 
     updatePosition() {
