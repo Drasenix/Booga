@@ -15,12 +15,14 @@ export class ServiceScore {
     private valeurScoreCollision: number = -100;
     private listeScoresAAfficher: Score[];
     private multiplicateursAAfficher: Multiplicateur | null;
+    private palierObtentionVie: number;
 
     constructor(p5: any, score: number) {
         this.p5 = p5;
         this.scoreGlobal = new Score(score, this.positionScoreX, this.positionScoreY, this.sizeScoreGlobal);
         this.listeScoresAAfficher = [];
         this.multiplicateursAAfficher = null;
+        this.palierObtentionVie = 5000;
     }
 
     public drawScorePartie() {
@@ -91,7 +93,14 @@ export class ServiceScore {
     }
 
     public augmenterScoreGlobal(score: Score) {
+        const scoreAvantAjout = this.scoreGlobal.getValeur();
         this.scoreGlobal.ajouterScore(score.getValeur());
+        const scoreApresAjout = this.scoreGlobal.getValeur();
+
+        if (score.getValeur() > 0 && scoreAvantAjout % this.palierObtentionVie > scoreApresAjout % this.palierObtentionVie) {
+            this.p5.serviceControleurPartie.getServicePVs().obtenirPV();
+        }
+        
     }
 
     public ajouterScoreToDraw(score: Score) {

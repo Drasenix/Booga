@@ -28,6 +28,10 @@ export class ServicePVs {
         }
     }
 
+    obtenirPV() {
+        this.nbPVs++;
+    }
+
     public getNbPVs() {
         return this.nbPVs;
     }
