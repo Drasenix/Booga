@@ -12,7 +12,9 @@ export class Ennemi {
     private velocite_y: number;
     
     private score: Score;
-   
+    
+    private contientBonus: boolean;
+    
     
     constructor(point: Point) {
         this.ennemi_cercle = new Circle(point.getPosX(), point.getPosY(), this.rayonCercle);
@@ -22,6 +24,9 @@ export class Ennemi {
         const valueScore = 50;
         const tailleScore = 32;
         this.score = new Score(valueScore, point.getPosX(), point.getPosY(), tailleScore);
+
+        const random = Math.random() * 10;
+        this.contientBonus = random < 2 ? true : false; 
     }
 
     updatePosition() {
@@ -77,5 +82,12 @@ export class Ennemi {
     }
     public setScore(value: Score) {
         this.score = value;
+    }
+
+    public getContientBonus(): boolean {
+        return this.contientBonus;
+    }
+    public setContientBonus(value: boolean) {
+        this.contientBonus = value;
     }
 }

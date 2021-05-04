@@ -1,5 +1,4 @@
 import { Ennemi } from "../class/Ennemi";
-import { Circle } from "../class/Circle";
 import { Point } from "../class/Point";
 
 export class ServiceEnnemis {
@@ -67,7 +66,12 @@ export class ServiceEnnemis {
 
     supprimerEnnemi(ennemi: Ennemi) {
         this.listeEnnemis = this.listeEnnemis.filter( (ennemiActuel: Ennemi) => {
-            return ennemi !== ennemiActuel;
+            const ennemiDifferent = ennemi !== ennemiActuel;
+            if (!ennemiDifferent && ennemiActuel.getContientBonus()) {
+                const point: Point = new Point(ennemiActuel.getEnnemiCercle().getPosX(), ennemiActuel.getEnnemiCercle().getPosY());
+                this.p5.serviceControleurPartie.getServiceBonus().faireApparaitreItemBouclier(point);
+            }
+            return ennemiDifferent;
         })
     }
 

@@ -41,6 +41,7 @@ export const boogaloopers = (p: any) => {
     p.serviceControleurPartie.getServiceBonus().drawBonus();
     p.serviceControleurPartie.getServiceEnnemis().drawEnnemis();
     p.serviceControleurPartie.getServiceVaisseau().drawVaisseau();
+    p.serviceControleurPartie.getServiceBonus().drawItems();
   }
 
   p.drawPartiePerdue = () => {    
