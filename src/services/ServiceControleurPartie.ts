@@ -21,7 +21,7 @@ export class ServiceControleurPartie {
     private serviceEnnemis: ServiceEnnemis;
     private serviceForme: ServiceFormes;
     private servicePVs: ServicePVs;
-    private serviceBonuss: ServiceBonus;        
+    private serviceBonus: ServiceBonus;        
     private serviceScore: ServiceScore;
     private serviceNiveau: ServiceNiveau;
     
@@ -46,7 +46,7 @@ export class ServiceControleurPartie {
         this.serviceEnnemis = new ServiceEnnemis(this.p5);
         this.serviceForme = new ServiceFormes(this.p5);
         this.servicePVs = new ServicePVs(this.p5, 2, this.largeur_images_hud, this.hauteur_images_hud);
-        this.serviceBonuss = new ServiceBonus(this.p5, 3, this.largeur_images_hud, this.hauteur_images_hud);
+        this.serviceBonus = new ServiceBonus(this.p5, 3, this.largeur_images_hud, this.hauteur_images_hud);
         this.serviceScore = new ServiceScore(this.p5, this.score);
 
         this.serviceNiveau.instancierNumeroNiveau(numeroNiveau);
@@ -119,11 +119,11 @@ export class ServiceControleurPartie {
     public setServicePVs(value: ServicePVs) {
         this.servicePVs = value;
     }
-    public getServiceBombes(): ServiceBonus {
-        return this.serviceBonuss;
+    public getServiceBonus(): ServiceBonus {
+        return this.serviceBonus;
     }
-    public setServiceBombes(value: ServiceBonus) {
-        this.serviceBonuss = value;
+    public setServiceBonus(value: ServiceBonus) {
+        this.serviceBonus = value;
     }
     public getServiceScore(): ServiceScore {
         return this.serviceScore;

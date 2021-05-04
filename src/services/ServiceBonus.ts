@@ -1,3 +1,4 @@
+import { Vaisseau } from "../class/Vaisseau";
 
 export class ServiceBonus {
 
@@ -15,10 +16,21 @@ export class ServiceBonus {
         this.largeur_img = largeur_img;
     }
 
-    drawBombes() {
+    drawBonus() {
         for (let i =0; i < this.nbBonus; i++ ) {
             this.p5.image(this.img, (i) * this.largeur_img, window.innerHeight - this.hauteur_img, this.largeur_img, this.hauteur_img);
         }
+    }
+
+    drawBouclier(vaisseau: Vaisseau) {
+        this.p5.tint(255, 127);
+        this.p5.image(
+            this.img,
+            vaisseau.getPointeurCercle().getPosX() - vaisseau.getRayonCercle(),
+            vaisseau.getPointeurCercle().getPosY() - vaisseau.getRayonCercle(),
+            vaisseau.getRayonCercle() * 2,
+            vaisseau.getRayonCercle() * 2 
+        );
     }
 
     public getNbBonus(): number {
