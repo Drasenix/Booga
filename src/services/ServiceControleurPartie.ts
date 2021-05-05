@@ -3,6 +3,7 @@ import { ServiceBonus } from "./ServiceBonus";
 import { ServiceEnnemis } from "./serviceEnnemis";
 import { ServiceFormes } from "./serviceFormes";
 import { ServiceMenus } from "./ServiceMenus";
+import { ServiceMusique } from "./ServiceMusique";
 import { ServiceNiveau } from "./ServiceNiveau";
 import { ServicePVs } from "./servicePV";
 import { ServiceScore } from "./ServiceScore";
@@ -24,7 +25,7 @@ export class ServiceControleurPartie {
     private serviceBonus: ServiceBonus;        
     private serviceScore: ServiceScore;
     private serviceNiveau: ServiceNiveau;
-    
+    private serviceMusique: ServiceMusique;
     
     private partiePerdue: boolean;
     private partieGagnee: boolean;
@@ -40,6 +41,7 @@ export class ServiceControleurPartie {
         this.partieGagnee = false;
         this.p5.instanciationTerminee = false;
 
+        this.serviceMusique = new ServiceMusique();
         this.serviceMenus = new ServiceMenus(this.p5);
         this.serviceNiveau = new ServiceNiveau(this.p5);
         this.serviceVaisseau = new ServiceVaisseau(this.p5, this.p5.mouseX, this.p5.mouseY);
@@ -48,7 +50,8 @@ export class ServiceControleurPartie {
         this.servicePVs = new ServicePVs(this.p5, 3, this.largeur_images_hud, this.hauteur_images_hud);
         this.serviceBonus = new ServiceBonus(this.p5, 3, this.largeur_images_hud, this.hauteur_images_hud);
         this.serviceScore = new ServiceScore(this.p5, this.score);
-
+        
+        this.serviceMusique.lancerMusique();
         this.serviceNiveau.instancierNumeroNiveau(numeroNiveau);
         this.serviceEnnemis.instancierEnnemis(this.serviceNiveau.getNiveauActuel().getNbEnnemis());
         this.serviceVaisseau.rendreVaisseauInvincibleTemporairement(this.serviceVaisseau.getDureeBoucliers());
@@ -56,6 +59,7 @@ export class ServiceControleurPartie {
     }
 
     instancierNouvellePartie() {
+        this.serviceMusique.stoperMusique();
         return new ServiceControleurPartie(this.p5, 1);
     }
     
@@ -76,8 +80,8 @@ export class ServiceControleurPartie {
         this.serviceVaisseau.rendreVaisseauInvincibleTemporairement(this.serviceVaisseau.getDureeBoucliers());
     }
 
-    perdrePartie() {
-        this.partiePerdue = true;
+    perdrePartie() {        
+        this.partiePerdue = true;        
     }
 
     gagnerPartie() {
