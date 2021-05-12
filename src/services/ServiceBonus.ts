@@ -4,7 +4,6 @@ import { Vaisseau } from "../class/Vaisseau";
 
 export class ServiceBonus {
 
-    private nbBonus: number;    
     private p5: any;
     private img_boucliers: any;
     private largeur_img: number;
@@ -12,19 +11,12 @@ export class ServiceBonus {
     private itemsBoucliers: ItemBouclier[];
     
 
-    constructor(p5: any, nbBonus: number, largeur_img: number, hauteur_img: number) {
+    constructor(p5: any, largeur_img: number, hauteur_img: number) {
         this.p5 = p5;
-        this.nbBonus = nbBonus;
         this.img_boucliers = this.p5.loadImage('assets/img/bouclier.png');
         this.hauteur_img = hauteur_img;
         this.largeur_img = largeur_img;
         this.itemsBoucliers = [];
-    }
-
-    drawBonus() {
-        for (let i =0; i < this.nbBonus; i++ ) {
-            this.p5.image(this.img_boucliers, (i) * this.largeur_img, window.innerHeight - this.hauteur_img, this.largeur_img, this.hauteur_img);
-        }
     }
 
     drawBouclier(vaisseau: Vaisseau) {
@@ -50,35 +42,20 @@ export class ServiceBonus {
         });
     }
 
-    utiliserBouclier() {
-        if (this.nbBonus) {
-            this.nbBonus --;
-            this.p5.serviceControleurPartie.getServiceVaisseau().rendreVaisseauInvincibleTemporairement(this.p5.serviceControleurPartie.getServiceVaisseau().getDureeBoucliers());
-        }
-    }
-
     faireApparaitreItemBouclier(point: Point) {
         const itemBouclier: ItemBouclier = new ItemBouclier(point);
         this.itemsBoucliers.push(itemBouclier);
     }
-
+    
     validerCaptureItemBouclier(itemBouclier: ItemBouclier) {
         this.supprimerItemBouclier(itemBouclier);
-        this.nbBonus ++;
+        this.p5.serviceControleurPartie.getServiceVaisseau().rendreVaisseauInvincibleTemporairement(this.p5.serviceControleurPartie.getServiceVaisseau().getDureeBoucliers());
     }
 
     supprimerItemBouclier(itemBouclier: ItemBouclier) {
         this.itemsBoucliers = this.itemsBoucliers.filter( (itemBouclierActuel: ItemBouclier) => {
             return itemBouclier !== itemBouclierActuel;
         })
-    }
-
-    public getNbBonus(): number {
-        return this.nbBonus;
-    }
-
-    public setNbBonus(value: number) {
-        this.nbBonus = value;
     }
 
     public getItemsBoucliers(): ItemBouclier[] {

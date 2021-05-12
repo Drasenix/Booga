@@ -38,7 +38,6 @@ export const boogaloopers = (p: any) => {
     p.serviceControleurPartie.getServiceScore().drawScorePartie();
     p.serviceControleurPartie.getServiceScore().drawScores();
     p.serviceControleurPartie.getServicePVs().drawPVs();
-    p.serviceControleurPartie.getServiceBonus().drawBonus();
     p.serviceControleurPartie.getServiceEnnemis().drawEnnemis();
     p.serviceControleurPartie.getServiceVaisseau().drawVaisseau();
     p.serviceControleurPartie.getServiceBonus().drawItems();
@@ -68,12 +67,6 @@ export const boogaloopers = (p: any) => {
     if (p.serviceControleurPartie.isPartieGagnee()) {
       const niveauSuivant = p.serviceControleurPartie.getServiceNiveau().getNiveauActuel().getNumeroNiveau() + 1;
       p.serviceControleurPartie.lancerNouveauNiveau(niveauSuivant);
-    }
-  }
-
-  p.keyPressed = () => {
-    if (p.keyCode === 32) {
-      p.serviceControleurPartie.getServiceBonus().utiliserBouclier();
     }
   }
 

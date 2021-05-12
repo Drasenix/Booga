@@ -48,18 +48,18 @@ export class ServiceControleurPartie {
         this.serviceEnnemis = new ServiceEnnemis(this.p5);
         this.serviceForme = new ServiceFormes(this.p5);
         this.servicePVs = new ServicePVs(this.p5, 3, this.largeur_images_hud, this.hauteur_images_hud);
-        this.serviceBonus = new ServiceBonus(this.p5, 3, this.largeur_images_hud, this.hauteur_images_hud);
+        this.serviceBonus = new ServiceBonus(this.p5, this.largeur_images_hud, this.hauteur_images_hud);
         this.serviceScore = new ServiceScore(this.p5, this.score);
         
-        this.serviceMusique.lancerMusique();
+        //this.serviceMusique.lancerMusique();
         this.serviceNiveau.instancierNumeroNiveau(numeroNiveau);
         this.serviceEnnemis.instancierEnnemis(this.serviceNiveau.getNiveauActuel().getNbEnnemis());
-        this.serviceVaisseau.rendreVaisseauInvincibleTemporairement(this.serviceVaisseau.getDureeBoucliers());
+        this.serviceVaisseau.rendreVaisseauInvincibleTemporairement(this.serviceVaisseau.getDureeBouclierDepart());
         this.p5.instanciationTerminee = true;
     }
 
     instancierNouvellePartie() {
-        this.serviceMusique.stoperMusique();
+        //this.serviceMusique.stoperMusique();
         return new ServiceControleurPartie(this.p5, 1);
     }
     
@@ -77,7 +77,7 @@ export class ServiceControleurPartie {
         this.serviceNiveau.instancierNumeroNiveau(numeroNiveau);
         this.serviceVaisseau = new ServiceVaisseau(this.p5, this.p5.mouseX, this.p5.mouseY);
         this.serviceEnnemis.instancierEnnemis(this.serviceNiveau.getNiveauActuel().getNbEnnemis());
-        this.serviceVaisseau.rendreVaisseauInvincibleTemporairement(this.serviceVaisseau.getDureeBoucliers());
+        this.serviceVaisseau.rendreVaisseauInvincibleTemporairement(this.serviceVaisseau.getDureeBouclierDepart());
     }
 
     perdrePartie() {        
