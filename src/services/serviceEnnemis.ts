@@ -67,10 +67,18 @@ export class ServiceEnnemis {
     supprimerEnnemi(ennemi: Ennemi) {
         this.listeEnnemis = this.listeEnnemis.filter( (ennemiActuel: Ennemi) => {
             const ennemiDifferent = ennemi !== ennemiActuel;
-            if (!ennemiDifferent && ennemiActuel.getContientBonus()) {
-                const point: Point = new Point(ennemiActuel.getEnnemiCercle().getPosX(), ennemiActuel.getEnnemiCercle().getPosY());
-                this.p5.serviceControleurPartie.getServiceBonus().faireApparaitreItemBouclier(point);
-            }
+            if (!ennemiDifferent) {
+                
+                if (ennemiActuel.getContientBonusBouclier()) {
+                    const point: Point = new Point(ennemiActuel.getEnnemiCercle().getPosX(), ennemiActuel.getEnnemiCercle().getPosY());
+                    this.p5.serviceControleurPartie.getServiceBonus().faireApparaitreItemBouclier(point);
+                }
+
+                if (ennemiActuel.getContientBonusEnergie()) {
+                    const point: Point = new Point(ennemiActuel.getEnnemiCercle().getPosX(), ennemiActuel.getEnnemiCercle().getPosY());
+                    this.p5.serviceControleurPartie.getServiceBonus().faireApparaitreItemEnergie(point);
+                }
+            } 
             return ennemiDifferent;
         })
     }

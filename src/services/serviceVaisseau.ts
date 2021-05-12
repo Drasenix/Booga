@@ -1,5 +1,6 @@
 import { Ennemi } from "../class/Ennemi";
 import { ItemBouclier } from "../class/ItemBouclier";
+import { ItemEnergie } from "../class/ItemEnergie";
 import { Line } from "../class/Line";
 import { Multiplicateur } from "../class/Multiplicateur";
 import { Point } from "../class/Point";
@@ -12,17 +13,18 @@ export class ServiceVaisseau {
     
     private indexPhaseAnimation: number = 0;
     private nbFrameAnimation: number = 10;    
-    private nbMaxLignes = 30;    
+    
+    private nbMaxLignes: number;    
+    private nbLignesMaxSansEnergie: number = 30;
+    private nbLignesMaxAvecEnergie: number = 100;
+  
     private timerInvincibilite: any;
+    private timerEnergie: any;
     
     private couleurVaisseau;
 
     private vaisseau: Vaisseau;    
     
-    private dureeBoucliers: number;
-    private dureeBouclierDepart: number;
-    private dureeBouclierCollision: number;  
-
     constructor(
       p5: any,
       pos_x: number,
@@ -31,9 +33,7 @@ export class ServiceVaisseau {
         this.p5 = p5;
         this.vaisseau = new Vaisseau(pos_x, pos_y);
         this.couleurVaisseau = this.p5.color(255, 255, 255);
-        this.dureeBoucliers = 10000;
-        this.dureeBouclierDepart = 1000;
-        this.dureeBouclierCollision = 500;
+        this.nbMaxLignes = this.nbLignesMaxSansEnergie;
     }
 
     drawFormeBoucle() {    
@@ -87,7 +87,7 @@ export class ServiceVaisseau {
     
     appliquerEffetsCollision() {
       this.effacerHistoriqueCoordonneesCurseur();
-      this.rendreVaisseauInvincibleTemporairement(this.getDureeBouclierCollision());
+      this.rendreVaisseauInvincibleTemporairement(this.p5.serviceControleurPartie.getServiceBonus().getDureeBouclierCollision());
       this.p5.serviceControleurPartie.getServicePVs().reduirePVs();
       this.p5.serviceControleurPartie.getServiceScore().perdreScoreCollision(this.vaisseau.getPointeurCercle().getPosX(), this.vaisseau.getPointeurCercle().getPosY());
     }   
@@ -96,6 +96,12 @@ export class ServiceVaisseau {
       this.vaisseau.setInvincible(true);
       clearTimeout(this.timerInvincibilite);
       this.timerInvincibilite=setTimeout(() => this.vaisseau.setInvincible(false), ms);
+    }
+
+    augmenterNbLignesVaisseauTemporairement(ms: number,) {
+      this.nbMaxLignes = this.nbLignesMaxAvecEnergie;
+      clearTimeout(this.timerEnergie);
+      this.timerEnergie=setTimeout(() => this.nbMaxLignes = this.nbLignesMaxSansEnergie, ms);
     }
 
     updateHistoriqueCoordonnes(point: Point) {
@@ -140,6 +146,7 @@ export class ServiceVaisseau {
               
               const formeCreee: [] = this.construireBoucle(lignesDeLaBoucle);
               this.verifierCaptureItemBoucliers(formeCreee, this.p5.serviceControleurPartie.getServiceBonus().getItemsBoucliers());
+              this.verifierCaptureItemEnergies(formeCreee, this.p5.serviceControleurPartie.getServiceBonus().getItemsEnergies());
               this.verifierCaptureEnnemis(formeCreee, this.p5.serviceControleurPartie.getServiceEnnemis().getListeEnnemis());
               this.validerBoucle(formeCreee);
           }
@@ -185,6 +192,17 @@ export class ServiceVaisseau {
 
         if (capture) {
           this.p5.serviceControleurPartie.getServiceBonus().validerCaptureItemBouclier(itemBouclier);
+        }
+      });
+    }
+
+    verifierCaptureItemEnergies(polygoneBoucle: [], itemsEnergies: ItemEnergie[])  {
+      itemsEnergies.forEach((itemEnergie: ItemEnergie) => {
+        const pointItem = itemEnergie.getPoint();
+        const capture: boolean = this.Collides.collidePointPoly(pointItem.getPosX(), pointItem.getPosY(), polygoneBoucle);
+
+        if (capture) {
+          this.p5.serviceControleurPartie.getServiceBonus().validerCaptureItemEnergie(itemEnergie);
         }
       });
     }
@@ -259,25 +277,11 @@ export class ServiceVaisseau {
     public setVaisseau(value: Vaisseau) {
       this.vaisseau = value;
     }
-
-    public getDureeBoucliers(): number {
-      return this.dureeBoucliers;
+    
+    public getNbLignesMaxAvecEnergie(): number {
+      return this.nbLignesMaxAvecEnergie;
     }
-    public setDureeBoucliers(value: number) {
-      this.dureeBoucliers = value;
-    }
-
-    public getDureeBouclierDepart(): number {
-      return this.dureeBouclierDepart;
-    }
-    public setDureeBouclierDepart(value: number) {
-      this.dureeBouclierDepart = value;
-    }
-
-    public getDureeBouclierCollision(): number {
-      return this.dureeBouclierCollision;
-    }
-    public setDureeBouclierCollision(value: number) {
-      this.dureeBouclierCollision = value;
+    public setNbLignesMaxAvecEnergie(value: number) {
+      this.nbLignesMaxAvecEnergie = value;
     }
 }

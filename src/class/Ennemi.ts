@@ -13,8 +13,8 @@ export class Ennemi {
     
     private score: Score;
     
-    private contientBonus: boolean;
-    
+    private contientBonusBouclier: boolean;    
+    private contientBonusEnergie: boolean;        
     
     constructor(point: Point) {
         this.ennemi_cercle = new Circle(point.getPosX(), point.getPosY(), this.rayonCercle);
@@ -26,7 +26,21 @@ export class Ennemi {
         this.score = new Score(valueScore, point.getPosX(), point.getPosY(), tailleScore);
 
         const random = Math.random() * 10;
-        this.contientBonus = random < 1 ? true : false; 
+        
+        this.contientBonusBouclier = false; 
+        this.contientBonusEnergie = false;
+
+        const contientBonus: boolean = random < 1 ? true : false;
+        if (contientBonus) {
+            this.genererBonusAleatoire();            
+        }
+        
+    }
+
+    private genererBonusAleatoire() {
+        const random = Math.floor(Math.random() * 2) + 1;
+        this.contientBonusBouclier = random === 1; 
+        this.contientBonusEnergie = random === 2;
     }
 
     updatePosition() {
@@ -84,10 +98,16 @@ export class Ennemi {
         this.score = value;
     }
 
-    public getContientBonus(): boolean {
-        return this.contientBonus;
+    public getContientBonusBouclier(): boolean {
+        return this.contientBonusBouclier;
     }
-    public setContientBonus(value: boolean) {
-        this.contientBonus = value;
+    public setContientBonusBouclier(value: boolean) {
+        this.contientBonusBouclier = value;
+    }
+    public getContientBonusEnergie(): boolean {
+        return this.contientBonusEnergie;
+    }
+    public setContientBonusEnergie(value: boolean) {
+        this.contientBonusEnergie = value;
     }
 }
