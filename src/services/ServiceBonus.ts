@@ -48,7 +48,7 @@ export class ServiceBonus {
         this.indexSpritesBoucliers = 0
         this.nbSpritesBoucliers = 3
         this.indexSpritesItemsBoucliers = 0
-        this.nbSpritesItemsBoucliers = 0
+        this.nbSpritesItemsBoucliers = 3
         this.indexSpritesItemsEnergies = 0
         this.nbSpritesItemsEnergies = 6
         this.frequenceRafraichissementSprites = 10;
@@ -56,21 +56,23 @@ export class ServiceBonus {
     }
 
     drawBouclier(vaisseau: Vaisseau) {
+        const indexSpriteBoucliers = this.calculerIndexSprite(this.indexSpritesBoucliers, this.frequenceRafraichissementSprites, this.nbSpritesBoucliers);
         this.p5.tint(255, 127);
         this.p5.image(
-            this.images_boucliers[this.indexSpritesBoucliers],
+            this.images_boucliers[indexSpriteBoucliers],
             vaisseau.getPointeurCercle().getPosX() - vaisseau.getRayonCercle(),
             vaisseau.getPointeurCercle().getPosY() - vaisseau.getRayonCercle(),
             vaisseau.getRayonCercle() * 2,
             vaisseau.getRayonCercle() * 2 
         );
-        this.indexSpritesBoucliers =  (this.indexSpritesBoucliers + 1 ) % ( this.nbSpritesBoucliers - 1 );
+        this.indexSpritesBoucliers =  this.indexSpritesBoucliers + 1;
     }
 
     drawItems() {
+        const indexSpriteItemsBoucliers = this.calculerIndexSprite(this.indexSpritesItemsBoucliers, this.frequenceRafraichissementSprites, this.nbSpritesItemsBoucliers);
         this.itemsBoucliers.forEach((itemBouclier: ItemBouclier) => {
             this.p5.image(
-                this.images_boucliers[this.indexSpritesItemsBoucliers],
+                this.images_boucliers[indexSpriteItemsBoucliers],
                 itemBouclier.getPoint().getPosX(),
                 itemBouclier.getPoint().getPosY(),
                 this.largeur_imgages_items,
@@ -78,9 +80,10 @@ export class ServiceBonus {
             );
         });
 
+        const indexSpritesItemsEnergies = this.calculerIndexSprite(this.indexSpritesItemsEnergies, this.frequenceRafraichissementSprites, this.nbSpritesItemsEnergies);
         this.itemsEnergies.forEach((itemEnergie: ItemEnergie) => {
             this.p5.image(
-                this.images_energies[this.indexSpritesItemsEnergies],
+                this.images_energies[indexSpritesItemsEnergies],
                 itemEnergie.getPoint().getPosX(),
                 itemEnergie.getPoint().getPosY(),
                 this.largeur_imgages_items,
@@ -88,12 +91,16 @@ export class ServiceBonus {
             );
         });
 
-        this.indexSpritesItemsBoucliers =  (this.indexSpritesItemsBoucliers + 1 ) % ( this.nbSpritesItemsBoucliers - 1 );
-        this.indexSpritesItemsEnergies =  (this.indexSpritesItemsEnergies + 1 ) % ( this.nbSpritesItemsEnergies - 1 );
+        this.indexSpritesItemsBoucliers = this.indexSpritesItemsBoucliers + 1 
+        this.indexSpritesItemsEnergies =  this.indexSpritesItemsEnergies + 1;
+    }
+
+    calculerIndexSprite(indexSpriteActuel: number, frequenceRafraichissement: number, nbMax: number) {
+        return Math.trunc( indexSpriteActuel / frequenceRafraichissement) % nbMax;
     }
 
     instancierImagesBoucliers() {
-        const img_boucliers1 = this.p5.loadImage('assets/img/bouclier1.png');
+        const img_boucliers1 = this.p5.loadImage('assets/sprites/bouclier1.png');
         const img_boucliers2 = this.p5.loadImage('assets/sprites/bouclier2.png');
         const img_boucliers3 = this.p5.loadImage('assets/sprites/bouclier3.png');
         this.images_boucliers.push(img_boucliers1);
