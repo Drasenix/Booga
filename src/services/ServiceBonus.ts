@@ -1,5 +1,6 @@
 import { ItemBouclier } from "../class/ItemBouclier";
 import { ItemEnergie } from "../class/ItemEnergie";
+import { ItemGel } from "../class/ItemGel";
 import { Point } from "../class/Point";
 import { Vaisseau } from "../class/Vaisseau";
 
@@ -8,15 +9,19 @@ export class ServiceBonus {
     private p5: any;
     private images_boucliers: any[];
     private images_energies: any[];
-    private largeur_imgages_items: number;
-    private hauteur_imgages_items: number;
+    private images_gels: any[];
+
+    private largeur_images_items: number;
+    private hauteur_images_items: number;
     private itemsBoucliers: ItemBouclier[];
     private itemsEnergies: ItemEnergie[];
+    private itemsGels: ItemGel[];
     
-    private dureeBoucliers: number;
     private dureeBouclierDepart: number;
     private dureeBouclierCollision: number;  
+    private dureeItemBouclier: number;
     private dureeItemEnergie: number;
+    private dureeItemGel: number;
 
     private indexSpritesBoucliers: number;
     private nbSpritesBoucliers: number;
@@ -24,6 +29,9 @@ export class ServiceBonus {
     private nbSpritesItemsBoucliers: number;
     private indexSpritesItemsEnergies: number;
     private nbSpritesItemsEnergies: number;
+    private indexSpritesItemsGels: number;
+    private nbSpritesItemsGels: number;
+
     private frequenceRafraichissementSprites: number;
     
     constructor(p5: any, largeur_images_items: number, hauteur_images_items: number) {
@@ -31,26 +39,33 @@ export class ServiceBonus {
 
         this.images_boucliers = [];
         this.images_energies = [];
+        this.images_gels = [];
 
         this.instancierImagesBoucliers();
         this.instancierImagesEnergies();
+        this.instancierImagesGels();
 
-        this.hauteur_imgages_items = hauteur_images_items;
-        this.largeur_imgages_items = largeur_images_items;
+        this.hauteur_images_items = hauteur_images_items;
+        this.largeur_images_items = largeur_images_items;
         this.itemsBoucliers = [];
         this.itemsEnergies = [];
-        
-        this.dureeBoucliers = 10000;
-        this.dureeBouclierDepart = 1000;
-        this.dureeBouclierCollision = 500;        
-        this.dureeItemEnergie = 10000;
+        this.itemsGels = [];
 
-        this.indexSpritesBoucliers = 0
-        this.nbSpritesBoucliers = 3
-        this.indexSpritesItemsBoucliers = 0
-        this.nbSpritesItemsBoucliers = 3
-        this.indexSpritesItemsEnergies = 0
-        this.nbSpritesItemsEnergies = 6
+        this.dureeBouclierDepart = 1000;
+        this.dureeBouclierCollision = 500;                
+        this.dureeItemBouclier = 10000;
+        this.dureeItemEnergie = 10000;
+        this.dureeItemGel = 10000;
+
+        this.indexSpritesBoucliers = 0;
+        this.nbSpritesBoucliers = 3;
+        this.indexSpritesItemsBoucliers = 0;
+        this.nbSpritesItemsBoucliers = 3;
+        this.indexSpritesItemsEnergies = 0;
+        this.nbSpritesItemsEnergies = 6;
+        this.indexSpritesItemsGels = 0;
+        this.nbSpritesItemsGels = 4;
+
         this.frequenceRafraichissementSprites = 10;
 
     }
@@ -75,8 +90,8 @@ export class ServiceBonus {
                 this.images_boucliers[indexSpriteItemsBoucliers],
                 itemBouclier.getPoint().getPosX(),
                 itemBouclier.getPoint().getPosY(),
-                this.largeur_imgages_items,
-                this.hauteur_imgages_items                
+                this.largeur_images_items,
+                this.hauteur_images_items                
             );
         });
 
@@ -86,13 +101,25 @@ export class ServiceBonus {
                 this.images_energies[indexSpritesItemsEnergies],
                 itemEnergie.getPoint().getPosX(),
                 itemEnergie.getPoint().getPosY(),
-                this.largeur_imgages_items,
-                this.hauteur_imgages_items                
+                this.largeur_images_items,
+                this.hauteur_images_items                
+            );
+        });
+
+        const indexSpritesItemsGels = this.calculerIndexSprite(this.indexSpritesItemsGels, this.frequenceRafraichissementSprites, this.nbSpritesItemsGels);
+        this.itemsGels.forEach((itemGel: ItemGel) => {
+            this.p5.image(
+                this.images_gels[indexSpritesItemsGels],
+                itemGel.getPoint().getPosX(),
+                itemGel.getPoint().getPosY(),
+                this.largeur_images_items,
+                this.hauteur_images_items                
             );
         });
 
         this.indexSpritesItemsBoucliers = this.indexSpritesItemsBoucliers + 1 
         this.indexSpritesItemsEnergies =  this.indexSpritesItemsEnergies + 1;
+        this.indexSpritesItemsGels =  this.indexSpritesItemsGels + 1;
     }
 
     calculerIndexSprite(indexSpriteActuel: number, frequenceRafraichissement: number, nbMax: number) {
@@ -124,6 +151,18 @@ export class ServiceBonus {
         this.images_energies.push(img_energie6);
     }
 
+    instancierImagesGels() {
+        const img_gel1 = this.p5.loadImage('assets/sprites/snowflake1.png');
+        const img_gel2 = this.p5.loadImage('assets/sprites/snowflake2.png');
+        const img_gel3 = this.p5.loadImage('assets/sprites/snowflake3.png');
+        const img_gel4 = this.p5.loadImage('assets/sprites/snowflake4.png');
+
+        this.images_gels.push(img_gel1);
+        this.images_gels.push(img_gel2);
+        this.images_gels.push(img_gel3);
+        this.images_gels.push(img_gel4);
+    }
+
     faireApparaitreItemBouclier(point: Point) {
         const itemBouclier: ItemBouclier = new ItemBouclier(point);
         this.itemsBoucliers.push(itemBouclier);
@@ -134,9 +173,14 @@ export class ServiceBonus {
         this.itemsEnergies.push(itemEnergie);
     }
 
+    faireApparaitreItemGel(point: Point) {
+        const itemGel: ItemGel = new ItemGel(point);
+        this.itemsGels.push(itemGel);
+    }
+
     validerCaptureItemBouclier(itemBouclier: ItemBouclier) {
         this.supprimerItemBouclier(itemBouclier);
-        this.p5.serviceControleurPartie.getServiceVaisseau().rendreVaisseauInvincibleTemporairement(this.dureeBoucliers);
+        this.p5.serviceControleurPartie.getServiceVaisseau().rendreVaisseauInvincibleTemporairement(this.dureeItemBouclier);
     }
 
     validerCaptureItemEnergie(itemEnergie: ItemEnergie) {
@@ -144,16 +188,28 @@ export class ServiceBonus {
         this.p5.serviceControleurPartie.getServiceVaisseau().augmenterNbLignesVaisseauTemporairement(this.dureeItemEnergie);
     }
 
+    validerCaptureItemGel(itemGel: ItemGel) {
+        this.supprimerItemGel(itemGel);
+        this.p5.serviceControleurPartie.getServiceEnnemis().gelerEnnemis(this.dureeItemGel);
+        
+    }
+
     supprimerItemBouclier(itemBouclier: ItemBouclier) {
         this.itemsBoucliers = this.itemsBoucliers.filter( (itemBouclierActuel: ItemBouclier) => {
             return itemBouclier !== itemBouclierActuel;
-        })
+        });
     }
 
     supprimerItemEnergie(itemEnergie: ItemEnergie) {
         this.itemsEnergies = this.itemsEnergies.filter( (itemEnergieActuel: ItemEnergie) => {
             return itemEnergie !== itemEnergieActuel;
-        })
+        });
+    }
+
+    supprimerItemGel(itemGel: ItemGel) {
+        this.itemsGels = this.itemsGels.filter( (itemGelActuel: ItemGel) => {
+            return itemGel !== itemGelActuel;
+        });
     }
 
     public getItemsBoucliers(): ItemBouclier[] {
@@ -171,10 +227,10 @@ export class ServiceBonus {
     }
 
     public getDureeBoucliers(): number {
-        return this.dureeBoucliers;
+        return this.dureeItemBouclier;
     }
     public setDureeBoucliers(value: number) {
-        this.dureeBoucliers = value;
+        this.dureeItemBouclier = value;
     }
 
     public getDureeBouclierDepart(): number {
@@ -196,5 +252,18 @@ export class ServiceBonus {
     }
     public setDureeItemEnergie(value: number) {
         this.dureeItemEnergie = value;
+    }
+    public getImages_gels(): any[] {
+        return this.images_gels;
+    }
+    public setImages_gels(value: any[]) {
+        this.images_gels = value;
+    }
+
+    public getItemsGels(): ItemGel[] {
+        return this.itemsGels;
+    }
+    public setItemsGels(value: ItemGel[]) {
+        this.itemsGels = value;
     }
 }

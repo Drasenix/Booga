@@ -5,6 +5,8 @@ export class ServiceEnnemis {
     private p5: any;    
 
     private listeEnnemis: Ennemi[] = [];    
+    
+    private timerGel: any;
 
     constructor(p5: any) {
         this.p5 = p5;
@@ -64,6 +66,18 @@ export class ServiceEnnemis {
         }
     }
 
+    gelerEnnemis(ms: number) {
+        this.listeEnnemis.map((ennemi: Ennemi) => {
+            return ennemi.gelerVelocite();
+        });
+        clearTimeout(this.timerGel);
+        this.timerGel=setTimeout(() => {
+            this.listeEnnemis.map((ennemi: Ennemi) => {
+                ennemi.degelerVelocite();
+            });
+        }, ms);
+    }
+
     supprimerEnnemi(ennemi: Ennemi) {
         this.listeEnnemis = this.listeEnnemis.filter( (ennemiActuel: Ennemi) => {
             const ennemiDifferent = ennemi !== ennemiActuel;
@@ -77,6 +91,11 @@ export class ServiceEnnemis {
                 if (ennemiActuel.getContientBonusEnergie()) {
                     const point: Point = new Point(ennemiActuel.getEnnemiCercle().getPosX(), ennemiActuel.getEnnemiCercle().getPosY());
                     this.p5.serviceControleurPartie.getServiceBonus().faireApparaitreItemEnergie(point);
+                }
+
+                if (ennemiActuel.getContientBonusGel()) {
+                    const point: Point = new Point(ennemiActuel.getEnnemiCercle().getPosX(), ennemiActuel.getEnnemiCercle().getPosY());
+                    this.p5.serviceControleurPartie.getServiceBonus().faireApparaitreItemGel(point);
                 }
             } 
             return ennemiDifferent;

@@ -1,6 +1,7 @@
 import { Ennemi } from "../class/Ennemi";
 import { ItemBouclier } from "../class/ItemBouclier";
 import { ItemEnergie } from "../class/ItemEnergie";
+import { ItemGel } from "../class/ItemGel";
 import { Line } from "../class/Line";
 import { Multiplicateur } from "../class/Multiplicateur";
 import { Point } from "../class/Point";
@@ -147,6 +148,7 @@ export class ServiceVaisseau {
               const formeCreee: [] = this.construireBoucle(lignesDeLaBoucle);
               this.verifierCaptureItemBoucliers(formeCreee, this.p5.serviceControleurPartie.getServiceBonus().getItemsBoucliers());
               this.verifierCaptureItemEnergies(formeCreee, this.p5.serviceControleurPartie.getServiceBonus().getItemsEnergies());
+              this.verifierCaptureItemGels(formeCreee, this.p5.serviceControleurPartie.getServiceBonus().getItemsGels());
               this.verifierCaptureEnnemis(formeCreee, this.p5.serviceControleurPartie.getServiceEnnemis().getListeEnnemis());
               this.validerBoucle(formeCreee);
           }
@@ -207,6 +209,16 @@ export class ServiceVaisseau {
       });
     }
 
+    verifierCaptureItemGels(polygoneBoucle: [], itemsGels: ItemGel[])  {
+      itemsGels.forEach((itemGel: ItemGel) => {
+        const pointItem = itemGel.getPoint();
+        const capture: boolean = this.Collides.collidePointPoly(pointItem.getPosX(), pointItem.getPosY(), polygoneBoucle);
+
+        if (capture) {
+          this.p5.serviceControleurPartie.getServiceBonus().validerCaptureItemGel(itemGel);
+        }
+      });
+    }
 
     conserverLignesBoucle(ligneDeCroisement: Line, listeLignesParcourues: Line[]) {
         const indexLigneCroisement = listeLignesParcourues.indexOf(ligneDeCroisement);    

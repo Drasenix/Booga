@@ -8,6 +8,7 @@ export class Ennemi {
     
     private rayonCercle = Math.random() * 30 + 10;
     
+    private isGele: boolean;
     private velocite_x: number;
     private velocite_y: number;
     
@@ -15,9 +16,11 @@ export class Ennemi {
     
     private contientBonusBouclier: boolean;    
     private contientBonusEnergie: boolean;        
+    private contientBonusGel: boolean;
     
     constructor(point: Point) {
         this.ennemi_cercle = new Circle(point.getPosX(), point.getPosY(), this.rayonCercle);
+        this.isGele = false;
         this.velocite_x = Math.random() * 5 * (Math.round(Math.random()) ? 1 : -1);
         this.velocite_y = Math.random() * 5 * (Math.round(Math.random()) ? 1 : -1);
     
@@ -29,8 +32,8 @@ export class Ennemi {
         
         this.contientBonusBouclier = false; 
         this.contientBonusEnergie = false;
-
-        const contientBonus: boolean = random < 1 ? true : false;
+        this.contientBonusGel = false;
+        const contientBonus: boolean = random < 10 ? true : false;
         if (contientBonus) {
             this.genererBonusAleatoire();            
         }
@@ -38,30 +41,34 @@ export class Ennemi {
     }
 
     private genererBonusAleatoire() {
-        const random = Math.floor(Math.random() * 2) + 1;
+        const random = Math.floor(Math.random() * 3) + 1;
         this.contientBonusBouclier = random === 1; 
         this.contientBonusEnergie = random === 2;
+        this.contientBonusGel = random === 3;
     }
 
     updatePosition() {
         const nouveauPointScore = new Point(this.ennemi_cercle.getPosX(), this.ennemi_cercle.getPosY());
         this.score.setPoint(nouveauPointScore);
-        if (
-            this.ennemi_cercle.getPosX() + this.velocite_x > window.innerWidth ||
-            this.ennemi_cercle.getPosX() + this.velocite_x < 0
-        ) {
-            this.inverserVelociteX();
-        }
-
-        if (
-            this.ennemi_cercle.getPosY() + this.velocite_y > window.innerHeight ||
-            this.ennemi_cercle.getPosY() + this.velocite_y < 0
-        ) {
-            this.inverserVelociteY();
-        }
-
-        this.ennemi_cercle.setPosX(this.ennemi_cercle.getPosX() + this.velocite_x);
-        this.ennemi_cercle.setPosY(this.ennemi_cercle.getPosY() + this.velocite_y);
+        
+        if (!this.isGele) {
+            if (
+                this.ennemi_cercle.getPosX() + this.velocite_x > window.innerWidth ||
+                this.ennemi_cercle.getPosX() + this.velocite_x < 0
+            ) {
+                this.inverserVelociteX();
+            }
+    
+            if (
+                this.ennemi_cercle.getPosY() + this.velocite_y > window.innerHeight ||
+                this.ennemi_cercle.getPosY() + this.velocite_y < 0
+            ) {
+                this.inverserVelociteY();
+            }
+    
+            this.ennemi_cercle.setPosX(this.ennemi_cercle.getPosX() + this.velocite_x);
+            this.ennemi_cercle.setPosY(this.ennemi_cercle.getPosY() + this.velocite_y);
+        } 
     }
 
     public inverserVelocite() {
@@ -75,6 +82,14 @@ export class Ennemi {
 
     public inverserVelociteY() {
         this.velocite_y = this.velocite_y * -1;
+    }
+
+    public gelerVelocite() {
+        this.isGele = true;
+    }
+
+    public degelerVelocite() {
+        this.isGele = false;
     }
 
     public getRayonCercle() {
@@ -109,5 +124,11 @@ export class Ennemi {
     }
     public setContientBonusEnergie(value: boolean) {
         this.contientBonusEnergie = value;
+    }
+    public getContientBonusGel(): boolean {
+        return this.contientBonusGel;
+    }
+    public setContientBonusGel(value: boolean) {
+        this.contientBonusGel = value;
     }
 }
