@@ -6,7 +6,7 @@ export class Ennemi {
 
     private ennemi_cercle: Circle;
     
-    private rayonCercle = Math.random() * 30 + 10;
+    private rayonCercle = Math.random() * 30 + 50;
     
     private isGele: boolean;
     private velocite_x: number;
@@ -33,7 +33,7 @@ export class Ennemi {
         this.contientBonusBouclier = false; 
         this.contientBonusEnergie = false;
         this.contientBonusGel = false;
-        const contientBonus: boolean = random < 10 ? true : false;
+        const contientBonus: boolean = random < 1 ? true : false;
         if (contientBonus) {
             this.genererBonusAleatoire();            
         }
