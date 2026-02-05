@@ -1,20 +1,27 @@
-import {Howl} from 'howler';
+import { Howl } from "howler";
 
 export class ServiceMusique {
-    private musiqueThemePrincipal: Howl;
+  private musiqueThemePrincipal: Howl;
+  private musiqueEnCours: boolean;
+  constructor() {
+    this.musiqueThemePrincipal = new Howl({
+      src: ["assets/sound/boogaloopersMainTrack.wav"],
+      loop: true,
+    });
+    this.musiqueEnCours = false;
+  }
 
-    constructor() {
-        this.musiqueThemePrincipal = new Howl({
-            src: ['assets/sound/boogaloopersMainTrack.wav'],
-            loop: true
-        });    
-    }
+  lancerMusique() {
+    this.musiqueThemePrincipal.play();
+    this.musiqueEnCours = true;
+  }
 
-    lancerMusique() {        
-        this.musiqueThemePrincipal.play();
-    }
+  stoperMusique() {
+    this.musiqueThemePrincipal.stop();
+    this.musiqueEnCours = false;
+  }
 
-    stoperMusique() {
-        this.musiqueThemePrincipal.stop();
-    }
+  isMusiqueEnCours(): boolean {
+    return this.musiqueEnCours;
+  }
 }

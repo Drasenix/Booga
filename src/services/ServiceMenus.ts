@@ -10,6 +10,18 @@ export class ServiceMenus {
         this.tailleTexteGameOver = 100;
     }
 
+    drawCommencerPartie() {
+        this.p5.background(0, 1000);
+
+        this.p5.textSize(100);
+        this.p5.fill(255, 255, 255);
+        this.p5.text(
+            'Click to begin !',
+            window.innerWidth / 2 - 3 * this.tailleTexteGameOver,
+            window.innerHeight / 2
+        );        
+    }
+
     drawPartiePerdue() {
         this.p5.background(0, 1000);
 
