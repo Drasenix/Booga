@@ -31,6 +31,13 @@ export const boogaloopers = (p: any) => {
     p.drawPartieEnCours();
   };
 
+  p.showFps = () => {
+    let fps = p.frameRate();
+    p.fill(125);
+    p.stroke(0);
+    p.text("FPS: " + fps.toFixed(2), 10, 100);
+  };
+
   p.drawPartieEnCours = () => {
     // Clear the frame
     p.background(0, 1000);
@@ -41,6 +48,8 @@ export const boogaloopers = (p: any) => {
     p.serviceControleurPartie.getServiceEnnemis().drawEnnemis();
     p.serviceControleurPartie.getServiceVaisseau().drawVaisseau();
     p.serviceControleurPartie.getServiceBonus().drawItems();
+
+    p.showFps();
   };
 
   p.drawPartiePerdue = () => {
