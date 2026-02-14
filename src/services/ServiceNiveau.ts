@@ -6,7 +6,7 @@ export class ServiceNiveau {
 
   constructor(p5: any) {
     this.p5 = p5;
-    this.niveauActuel = new Niveau(3);
+    this.niveauActuel = new Niveau(0);
   }
 
   instancierNumeroNiveau(numero: number) {
